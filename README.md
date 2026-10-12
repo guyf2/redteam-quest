@@ -13,6 +13,7 @@ All of it runs on your own computer, against local models.
 ![Runs locally](https://img.shields.io/badge/runs-100%25%20locally-success)
 ![Models](https://img.shields.io/badge/models-Ollama-black)
 ![Levels](https://img.shields.io/badge/levels-41-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 <img src="docs/screenshots/map.png" alt="The RedTeam Quest world map: seven worlds, each ending in a boss" width="90%">
 
@@ -115,6 +116,10 @@ Your progress is saved to `game/state.json` and your agent chats to `game/chat.j
 
 Every target is a local model running on your own machine, and nothing here touches anyone else's systems.
 Use what you learn only on systems you own or are explicitly authorised to test.
+
+## 📄 License
+
+[MIT](LICENSE). Free to use, modify and share.
 
 <div align="center">
 
