@@ -355,7 +355,28 @@ class H(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def guard(self, post=False):
+        """Browser-attack defence for a server any web page can reach at localhost: only our own origin may talk
+        to it. Host must be localhost (blocks DNS rebinding), a present Origin must be ours (blocks cross-site
+        requests), and POSTs must be application/json (a cross-site page cannot send that without a CORS
+        preflight, which this server never grants). Without this, any site the player visits could write code
+        into a level file and then trigger the grader, which runs it."""
+        port = self.server.server_address[1]
+        if self.headers.get("Host", "") not in (f"127.0.0.1:{port}", f"localhost:{port}"):
+            self.send({"error": "forbidden host"}, 403)
+            return False
+        origin = self.headers.get("Origin")
+        if origin is not None and origin not in (f"http://127.0.0.1:{port}", f"http://localhost:{port}"):
+            self.send({"error": "forbidden origin"}, 403)
+            return False
+        if post and not self.headers.get("Content-Type", "").lower().startswith("application/json"):
+            self.send({"error": "POST must be application/json"}, 415)
+            return False
+        return True
+
     def do_GET(self):
+        if not self.guard():
+            return
         u = urlparse(self.path)
         if u.path in STATIC:
             f, ctype = STATIC[u.path]
@@ -393,6 +414,8 @@ class H(BaseHTTPRequestHandler):
         self.send({"error": "not found"}, 404)
 
     def do_POST(self):
+        if not self.guard(post=True):
+            return
         parts = self.path.strip("/").split("/")
         if parts[:2] != ["api", "level"] or len(parts) != 4:
             return self.send({"error": "not found"}, 404)
