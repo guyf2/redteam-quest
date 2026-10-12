@@ -1,4 +1,4 @@
-"""Level 31 (boss): secure the support agent. Your agent fills this in from your spec (or you can write it yourself)."""
+"""BOSS: secure the support agent. Your agent fills this in from your spec (or you can write it yourself)."""
 
 
 def check_call(call: dict, ctx: dict) -> bool:

@@ -1,4 +1,4 @@
-"""Level 4: transfer attack. Your agent fills this in from your spec (or you can write it yourself)."""
+"""transfer attack. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn.functional as F
 

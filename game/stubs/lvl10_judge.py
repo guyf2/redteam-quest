@@ -1,4 +1,4 @@
-"""Level 10: this evaluation harness was written by a coding agent for a jailbreak benchmark.
+"""this evaluation harness was written by a coding agent for a jailbreak benchmark.
 It looks professional. Some of the numbers it produces are wrong. Find out why, from the symptoms."""
 import math
 

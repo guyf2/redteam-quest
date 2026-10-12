@@ -27,7 +27,7 @@ What goes wrong, and what the harness above does:
   4. NO PROJECTION OR CLIPPING. Perturbed pixels must stay in [0, 1] and within eps of the original.
   5. ATTACKS THAT FOLLOW A MASKED GRADIENT. If a model hides or flattens its gradient (like the quantization defense in the boss level), a gradient attack goes nowhere and reports a false victory for the defender. A trustworthy evaluation includes ADAPTIVE attacks: transfer from the model's inner network, or BPDA (a straight-through approximation of the non-differentiable step), and takes the WORST case across all of them.
 
-The three models in the grader: a standard classifier, the quantization-'defended' classifier from level 7 (which exposes its inner network as `model.base` and its `levels` attribute), and a PGD adversarially-trained classifier. The grader knows the true worst-case robust accuracy of each (measured with a strong adaptive evaluation). Your function must reproduce it, not flatter it.
+The three models in the grader: a standard classifier, the quantization-'defended' classifier from the 'robust' model boss (which exposes its inner network as `model.base` and its `levels` attribute), and a PGD adversarially-trained classifier. The grader knows the true worst-case robust accuracy of each (measured with a strong adaptive evaluation). Your function must reproduce it, not flatter it.
 
 The grader gives symptoms only: your number and the true one for each model."""
 WIN = (f"For each of the three models at eps = {EPS}, your robust_accuracy must land within {TOL:.0%} of the true worst-case value, "

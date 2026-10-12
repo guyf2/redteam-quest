@@ -1,4 +1,4 @@
-"""Level 17: model extraction. Your agent fills this in from your spec (or you can write it yourself)."""
+"""model extraction. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

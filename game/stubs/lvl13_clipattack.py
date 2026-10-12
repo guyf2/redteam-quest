@@ -1,4 +1,4 @@
-"""Level 13: adversarial image against CLIP. Your agent fills this in from your spec (or you can write it yourself)."""
+"""adversarial image against CLIP. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn.functional as F
 

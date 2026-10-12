@@ -1,4 +1,4 @@
-"""Level 6: adversarial patch. Your agent fills this in from your spec (or you can write it yourself)."""
+"""adversarial patch. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn.functional as F
 

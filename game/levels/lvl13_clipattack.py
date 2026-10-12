@@ -16,7 +16,7 @@ STUB = pathlib.Path(__file__).resolve().parents[2] / "labs/03-multimodal/lvl13_c
 PRISTINE = pathlib.Path(__file__).resolve().parents[2] / "game/stubs/lvl13_clipattack.py"
 EPS, NEED, N, CHUNK = 16 / 255, 0.80, 36, 12
 
-INTRO = ("Level 12 fooled CLIP with a word. Now do it the invisible way: change the image so slightly that a human sees "
+INTRO = ("The typographic-attack level fooled CLIP with a word. Now do it the invisible way: change the image so slightly that a human sees "
          "no difference, with the optimiser you already know. But this service is not naive: it processes every upload first.")
 CONCEPT = """Everything from the vision world transfers to multimodal models: CLIP is just a neural network with a differentiable path from pixels to a score, so PGD works on it. You attack the zero-shot logits (image against the text prompts 'a photo of a dog', ...), minimise the loss toward the target class, and keep every pixel within eps.
 

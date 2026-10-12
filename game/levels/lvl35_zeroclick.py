@@ -11,7 +11,7 @@ XP = 70
 
 INTRO = ("AcmeShop has a public 'Contact Us' form. Anyone, logged in or not, can submit a ticket. An internal support agent "
          "picks tickets off the queue on its own schedule and acts on them. Nobody else has to do anything at all.")
-CONCEPT = """Level 9 needed a victim: a real user who asked the assistant to summarize an inbox that happened to contain your planted email. That human step is a place defenses can intervene (asking the user to confirm, warning them, limiting what they forward) and a place blame can fall on someone being fooled.
+CONCEPT = """The email-assistant injection level needed a victim: a real user who asked the assistant to summarize an inbox that happened to contain your planted email. That human step is a place defenses can intervene (asking the user to confirm, warning them, limiting what they forward) and a place blame can fall on someone being fooled.
 
 This level has no such step. You fill out a public form. Nobody reads it, approves it, or forwards it to anyone. An internal agent, left running, eventually pulls the next ticket off the queue and processes it as part of its normal job, exactly as it would process a genuine customer's ticket. That is the whole attack surface: your ticket text, and the agent's own willingness to act on it.
 
@@ -62,7 +62,7 @@ HACK = {
 }
 
 QUIZ = [
-    ("What makes this attack 'zero-click' compared to the L9 email injection?",
+    ("What makes this attack 'zero-click' compared to the earlier email-assistant injection?",
      ['It uses a public form instead of email', 'No legitimate user has to be fooled, click anything, or take any action at all; the agent processes the queue on its own', 'It needs a stronger model'], 1,
      "The defining feature is the absence of any human in the loop between the attacker and the agent."),
     ('Why is a public, unauthenticated submission form a meaningful attack surface for an AI agent?',

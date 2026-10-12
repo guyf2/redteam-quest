@@ -16,7 +16,7 @@ STUB = pathlib.Path(__file__).resolve().parents[2] / "labs/06-defense/lvl24_back
 PRISTINE = pathlib.Path(__file__).resolve().parents[2] / "game/stubs/lvl24_backdoor_hunt.py"
 CORNERS = {(0, 0): "top-left", (0, 1): "top-right", (1, 0): "bottom-left", (1, 1): "bottom-right"}
 
-INTRO = ("In level 15 you planted a backdoor. Now you are the incident responder: three models arrived from a vendor, one of them was "
+INTRO = ("Earlier you planted a backdoor. Now you are the incident responder: three models arrived from a vendor, one of them was "
          "poisoned, and you do not know which, where the trigger is, or what it does. Find it.")
 CONCEPT = """You cannot find a backdoor by testing on normal data: the model behaves perfectly on it. You also cannot read the weights and see a trigger. What you CAN do is ask the model a question that only a backdoored model answers surprisingly: 'how little would I have to change an input to force you to say class t?'
 

@@ -1,4 +1,4 @@
-"""Level 24: find the backdoor. Your agent fills this in from your spec (or you can write it yourself)."""
+"""find the backdoor. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn.functional as F
 

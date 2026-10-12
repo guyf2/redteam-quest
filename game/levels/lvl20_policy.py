@@ -12,7 +12,7 @@ STUB = pathlib.Path(__file__).resolve().parents[2] / "labs/05-agents/lvl20_polic
 PRISTINE = pathlib.Path(__file__).resolve().parents[2] / "game/stubs/lvl20_policy.py"
 NEED_BLOCK, NEED_ALLOW = 0.95, 0.95
 
-INTRO = ("Levels 9 and 14 showed that text a model reads can steer what it does. You cannot make the model immune. "
+INTRO = ("The email-assistant and hidden-image-instruction levels showed that text a model reads can steer what it does. You cannot make the model immune. "
          "So build the part that does not depend on the model: the policy that decides, in code, which tool calls may actually happen.")
 CONCEPT = """An agent has three ingredients, and the dangerous combination (sometimes called the lethal trifecta) is all three together:
   1. access to PRIVATE DATA (inbox, files),

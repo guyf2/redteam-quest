@@ -1,4 +1,4 @@
-"""Level 7 (boss): break the 'robust' model. Your agent fills this in from your spec (or you can write it yourself)."""
+"""BOSS: break the 'robust' model. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn.functional as F
 

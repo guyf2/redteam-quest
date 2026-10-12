@@ -1,4 +1,4 @@
-<!-- LEVEL 27. Turn the raw lab notes below into a vulnerability report. Then DELETE the notes section:
+<!-- Turn the raw lab notes below into a vulnerability report. Then DELETE the notes section:
      a report must never contain the raw secrets that are in the notes. -->
 
 # LAB NOTES (raw, sensitive: do not paste these values into the report)

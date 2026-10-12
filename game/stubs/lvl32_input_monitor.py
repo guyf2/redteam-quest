@@ -1,4 +1,4 @@
-"""Level 32 (boss): build the input monitor. Your agent fills this in from your spec (or you can write it yourself)."""
+"""BOSS: build the input monitor. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 
 

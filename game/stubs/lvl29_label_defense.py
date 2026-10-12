@@ -1,4 +1,4 @@
-"""Level 29 (boss): stop the label trick. Your agent fills this in from your spec (or you can write it yourself)."""
+"""BOSS: stop the label trick. Your agent fills this in from your spec (or you can write it yourself)."""
 from PIL import Image
 
 

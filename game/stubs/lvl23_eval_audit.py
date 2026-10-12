@@ -1,4 +1,4 @@
-"""Level 23: this robustness evaluation was written by a coding agent for a model-security report.
+"""this robustness evaluation was written by a coding agent for a model-security report.
 It looks professional. Some of the numbers it prints are wrong. Find out why, from the symptoms."""
 import torch
 import torch.nn.functional as F

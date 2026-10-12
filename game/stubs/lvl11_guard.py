@@ -1,4 +1,4 @@
-"""Level 11: build the guardrail. Your agent fills this in from your spec (or you can write it yourself)."""
+"""build the guardrail. Your agent fills this in from your spec (or you can write it yourself)."""
 
 
 def guard(user_message: str, reply: str, secret: str) -> bool:

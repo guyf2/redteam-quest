@@ -1,4 +1,4 @@
-"""Level 20: write the agent's permission policy. Your agent fills this in from your spec (or you can write it yourself)."""
+"""write the agent's permission policy. Your agent fills this in from your spec (or you can write it yourself)."""
 
 
 def allow(call: dict, ctx: dict) -> bool:

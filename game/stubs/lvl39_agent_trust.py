@@ -1,4 +1,4 @@
-"""Level 39: this agent-to-agent trust check was written by a coding agent. It looks careful. It is not:
+"""this agent-to-agent trust check was written by a coding agent. It looks careful. It is not:
 it decides who a message is 'from' by reading a claim inside the message's own free text."""
 
 TRUSTED_AGENTS = {"scheduler-agent", "billing-agent", "support-agent"}

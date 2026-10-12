@@ -30,7 +30,7 @@ For each threat write down:
   - LIKELIHOOD (1-5) and IMPACT (1-5). Their product ranks the threats;
   - a MITIGATION: something specific you would build or change (not 'be careful').
 
-The skill is judgment about WHAT MATTERS MOST. Count what the system can DO. A bot that can read untrusted text, see private data, AND issue refunds or send mail has the dangerous combination from level 20. A leaked tone-guidance prompt is embarrassing; a refund API steered by an outsider's email is money gone. Your ranking must reflect that.
+The skill is judgment about WHAT MATTERS MOST. Count what the system can DO. A bot that can read untrusted text, see private data, AND issue refunds or send mail has the dangerous combination from the permission-policy level. A leaked tone-guidance prompt is embarrassing; a refund API steered by an outsider's email is money gone. Your ranking must reflect that.
 
 Work as the commander: tell your agent the system, the categories and the format, then REVIEW the table it produces. Agents love generic threats ('data breach'); you want threats specific to THIS system's parts. The grader gives symptoms about coverage and priorities."""
 WIN = ("Write a JSON threat list with at least 8 threats that covers all 8 categories and every key asset of SupportBot, with likelihood and impact from 1 to 5, "

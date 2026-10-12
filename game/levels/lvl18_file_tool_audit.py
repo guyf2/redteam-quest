@@ -15,7 +15,7 @@ PRISTINE = pathlib.Path(__file__).resolve().parents[2] / "game/stubs/lvl18_filet
 
 INTRO = ("An AI assistant can read files, but only inside its sandbox folder. The tool was written by a coding agent and passes a quick "
          "test. Before it ships, find out whether the model (or whoever is steering it) can read anything outside the folder.")
-CONCEPT = """An agent's tool is the last line of defense. A model can be persuaded to ask for any path (levels 8 and 9 showed how), so the tool must enforce the boundary itself, in code, and never rely on the model to behave. File access is the classic place this goes wrong, a well-known weakness class called PATH TRAVERSAL.
+CONCEPT = """An agent's tool is the last line of defense. A model can be persuaded to ask for any path (the prompt-injection levels showed how), so the tool must enforce the boundary itself, in code, and never rely on the model to behave. File access is the classic place this goes wrong, a well-known weakness class called PATH TRAVERSAL.
 
 The common mistakes, all visible in the starting code:
   1. TRUSTING THE TEXT OF THE PATH. 'notes/../../outside.txt' looks like it starts inside the folder, but the '..' parts climb out. You must resolve the path to its real, absolute form first, then compare.
