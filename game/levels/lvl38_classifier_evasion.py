@@ -46,17 +46,17 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('How is attacking this text classifier like the black-box image attack?',
-     ['Both require the classifier\'s gradients', "Both only allow querying (text/image in, a score out) with no internal access, searching blindly for a boundary crossing within a budget", 'Both use the same model architecture'], 1,
-     "The access pattern (score in, input out, a query budget, no gradients) is identical; only the input type changed."),
+     ['Both only allow querying (text/image in, a score out) with no internal access, searching blindly for a boundary crossing within a budget', "Both require the classifier's gradients", 'Both use the same model architecture'], 0,
+     'The access pattern (score in, input out, a query budget, no gradients) is identical; only the input type changed.'),
     ('Why is the classifier in this lab easy to evade?',
-     ['It was trained on millions of examples', "It is deliberately undertrained on a handful of examples, so it keys on a few surface words rather than real meaning, like an overfit image classifier keying on a few pixels", 'It never sees the input'], 1,
-     "An undertrained classifier latches onto spurious, narrow features; removing those specific words crosses its boundary even though nothing about the real meaning changed."),
-    ("Why does the grader also run an independent judge on your rewritten text?",
-     ['To slow down the grader', "To rule out the trivial cheat of changing the topic entirely (asking something harmless) instead of actually evading detection of the same harmful request", 'To check spelling'], 1,
-     "A rewording that fools the classifier by abandoning the harmful request has not demonstrated an evasion at all."),
+     ['It was trained on millions of examples', 'It is deliberately undertrained on a handful of examples, so it keys on a few surface words rather than real meaning, like an overfit image classifier keying on a few pixels', 'It never sees the input'], 1,
+     'An undertrained classifier latches onto spurious, narrow features; removing those specific words crosses its boundary even though nothing about the real meaning changed.'),
+    ('Why does the grader also run an independent judge on your rewritten text?',
+     ['To rule out the trivial cheat of changing the topic entirely (asking something harmless) instead of actually evading detection of the same harmful request', 'To slow down the grader', 'To check spelling'], 0,
+     'A rewording that fools the classifier by abandoning the harmful request has not demonstrated an evasion at all.'),
     ('What does this level suggest about real-world prompt-safety filters trained the same brittle way?',
-     ['They are perfectly safe once deployed', 'A narrow, undertrained classifier can be evaded by paraphrase while the underlying harmful intent survives, which is why production systems need more than one signal', 'Bigger inputs always fix classifiers'], 1,
-     "Defense in depth (multiple independent checks) matters for text classifiers for the same reason it matters for image classifiers and chatbot guardrails elsewhere in this game."),
+     ['A narrow, undertrained classifier can be evaded by paraphrase while the underlying harmful intent survives, which is why production systems need more than one signal', 'They are perfectly safe once deployed', 'Bigger inputs always fix classifiers'], 0,
+     'Defense in depth (multiple independent checks) matters for text classifiers for the same reason it matters for image classifiers and chatbot guardrails elsewhere in this game.'),
 ]
 HINTS = [
     "Treat this exactly like the black-box image attack: you cannot see the classifier, only call classify(text) and read a number. Try small rewordings and keep whichever lowers the score.",

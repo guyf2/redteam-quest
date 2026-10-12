@@ -50,16 +50,16 @@ AGENT_TASK = ("The player found problems in this tool. Apply ONLY the fixes thei
 
 QUIZ = [
     ("Why is `command.startswith(('ls', 'cat'))` a bad allowlist?",
-     ["The allowlist should instead check the command's exit code", 'Shell commands cannot be parsed reliably at all', "'ls; anything' and 'catastrophe' also start with an allowed name"], 2,
+     ["The allowlist should instead check the command's exit code", "'ls; anything' and 'catastrophe' also start with an allowed name", 'Shell commands cannot be parsed reliably at all'], 1,
      'Match the program name exactly, after parsing, not the first characters of a string.'),
     ('What does shell=False with a list of arguments change?',
-     ['Characters like ; | && > are no longer operators: they are just text inside an argument', 'Nothing', 'It runs faster only'], 0,
+     ['Nothing', 'Characters like ; | && > are no longer operators: they are just text inside an argument', 'It runs faster only'], 1,
      'No shell means no shell language.'),
     ('An allowed command like cat can still be abused. How?',
      ['It cannot', 'By running it twice', 'By pointing it at files outside the sandbox, so arguments must be validated too'], 2,
      'An allowed program with unchecked arguments is an arbitrary file reader.'),
     ('What is the strongest design for an agent that needs to read files?',
-     ['Expose narrow operations (list, read) with validated parameters instead of a command line', 'Give it a shell', 'Make the shell prompt stricter'], 0,
+     ['Make the shell prompt stricter', 'Give it a shell', 'Expose narrow operations (list, read) with validated parameters instead of a command line'], 2,
      'The smaller the interface, the less there is to get wrong.'),
 ]
 HINTS = [

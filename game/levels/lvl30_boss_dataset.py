@@ -39,13 +39,13 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ("Why can you not rely on 'remove examples the model gets wrong' alone?",
-     ['Models are never wrong', 'It is too slow', 'Honest label noise and hard examples look the same as attacks, so you would also throw away good data'], 2,
+     ['Models are never wrong', 'Honest label noise and hard examples look the same as attacks, so you would also throw away good data', 'It is too slow'], 1,
      'Filters trade attacks removed against data lost; you must measure both.'),
     ("What does the trusted set give you that the vendor's data cannot?",
-     ['More data', 'A faster GPU', "An independent reference of what the labels SHOULD be, which does not share the vendor's possible tampering"], 2,
+     ["An independent reference of what the labels SHOULD be, which does not share the vendor's possible tampering", 'A faster GPU', 'More data'], 0,
      'Trust has to come from outside the thing you are checking.'),
     ('The next delivery uses a different trigger. Your filter that looked for one specific pattern now fails. Lesson?',
-     ['Collect more patterns', 'Stop using vendors', 'Detect the effect (labels that contradict the content), not the signature of one attack'], 2,
+     ['Detect the effect (labels that contradict the content), not the signature of one attack', 'Stop using vendors', 'Collect more patterns'], 0,
      'Signature defenses always lose to a new signature.'),
 ]
 HINTS = ["Think about what a tampered example has in common regardless of its trigger: its content and its label disagree.", "A model trained only on the trusted set can vote on every vendor label."]

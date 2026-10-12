@@ -64,7 +64,7 @@ QUIZ = [
      ['A stronger backdoor', 'No backdoor: the model never learns that the trigger means the target class', 'The model crashes'], 1,
      "The association 'trigger -> target class' only exists if the poisoned examples carry the target label."),
     ('You stamp the corner during poisoning but your apply_trigger() puts the pattern in the middle. Result?',
-     ['It still works', 'Accuracy rises', 'The attack fails: the model learned a corner pattern, not a middle one'], 2,
+     ['It still works', 'The attack fails: the model learned a corner pattern, not a middle one', 'Accuracy rises'], 1,
      'The trigger at test time must match what was planted in training.'),
     ('Which is the most realistic way an attacker poisons a large model?',
      ['Publishing data (web pages, datasets, labelled contributions) that the victim will scrape or download', 'Hacking the GPU cluster', 'Guessing the weights'], 0,

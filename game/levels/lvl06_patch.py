@@ -52,16 +52,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ("What does 'universal' mean for an adversarial patch?",
-     ['One patch works across many different images', 'It is invisible to the human eye', 'It works on every model, not just the one it was trained on'], 0,
+     ['It is invisible to the human eye', 'One patch works across many different images', 'It works on every model, not just the one it was trained on'], 1,
      'The patch is optimised over a whole dataset of images, not one, so it generalises across images of the same model; it says nothing about other models or about being invisible.'),
     ('You train the patch at one fixed position and it works there but fails in the grader. Why?',
-     ['The model changed between training and grading', 'It overfit that position; you need random placement during training (EOT)', 'The patch is too small to carry enough signal'], 1,
+     ['It overfit that position; you need random placement during training (EOT)', 'The model changed between training and grading', 'The patch is too small to carry enough signal'], 0,
      'Without randomised placement during training, the optimiser exploits the one spot it saw and the patch fails wherever the grader happens to place it.'),
     ('Why is a patch attack more worrying for deployed systems than an every-pixel attack?',
-     ['It can be physically realised: printed and placed in the real world', 'It is cheaper to compute than a pixel-budget attack', 'It needs no access to the model at all'], 0,
+     ['It is cheaper to compute than a pixel-budget attack', 'It can be physically realised: printed and placed in the real world', 'It needs no access to the model at all'], 1,
      "An attacker cannot edit a camera's raw pixels in the real world, but they can print a sticker and place it in the scene, which an every-pixel attack cannot do."),
     ('Which extra transformations does a physical-world patch need to survive?',
-     ['Only JPEG compression', 'Rotation, scaling, lighting changes, and printing/camera colour errors', 'Only a change in lighting'], 1,
+     ['Rotation, scaling, lighting changes, and printing/camera colour errors', 'Only JPEG compression', 'Only a change in lighting'], 0,
      'Expectation over Transformation has to cover every nuisance the real world adds between the sticker and the sensor, not just one of them.'),
 ]
 HINTS = [

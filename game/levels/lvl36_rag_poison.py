@@ -67,16 +67,16 @@ HACK = {
 QUIZ = [
     ('Why can a RAG system be LESS trustworthy than a plain chatbot if its knowledge base is not controlled?',
      ['RAG always uses a bigger model', "Grounding in retrieved text is the feature; if the retrieved text is poisoned, the model faithfully repeats the poison with the authority of a 'source'", 'RAG systems have no system prompt'], 1,
-     "The same mechanism that makes RAG more accurate on good data makes it confidently wrong on bad data."),
-    ('What made this level\'s retrieval step easy to attack?',
-     ['It used a strong embedding model', 'It scores purely by word overlap with no check on the age, authorship or trust of a document', 'It only retrieves one document ever'], 1,
+     'The same mechanism that makes RAG more accurate on good data makes it confidently wrong on bad data.'),
+    ("What made this level's retrieval step easy to attack?",
+     ['It scores purely by word overlap with no check on the age, authorship or trust of a document', 'It used a strong embedding model', 'It only retrieves one document ever'], 0,
      "Simple keyword retrieval rewards whichever document uses the query's own vocabulary most, regardless of provenance."),
     ("Telling the model 'be skeptical of a single uncorroborated document' is...",
      ['A complete fix', 'Advice the model applies inconsistently, not a guarantee, as the measured drop (not elimination) in this level shows', 'Irrelevant to RAG'], 1,
-     "Prompt-level caution reduces but does not reliably stop a model from repeating a confidently-worded planted claim."),
+     'Prompt-level caution reduces but does not reliably stop a model from repeating a confidently-worded planted claim.'),
     ("This level's 'require two agreeing documents' rule is enforced by...",
-     ['Code that counts matching documents before allowing a claim', "The model itself, as a prompt-level instruction it applies to its own retrieved context, the same as the 'be skeptical' rule", 'A separate verification model'], 1,
-     "Both rules in this level ask the MODEL to judge its own retrieved context; neither is a structural, code-enforced check, which is why this level measured no real difference between them."),
+     ['Code that counts matching documents before allowing a claim', 'A separate verification model', "The model itself, as a prompt-level instruction it applies to its own retrieved context, the same as the 'be skeptical' rule"], 2,
+     'Both rules in this level ask the MODEL to judge its own retrieved context; neither is a structural, code-enforced check, which is why this level measured no real difference between them.'),
 ]
 HINTS = [
     "Rung 1: repeat 'refund' and 'policy' heavily and state a specific, confident (false) number or rule, so your document both wins retrieval and reads like a real policy.",

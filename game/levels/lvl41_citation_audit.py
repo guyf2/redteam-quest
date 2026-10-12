@@ -60,7 +60,7 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('Why can a fabricated citation be more misleading than an answer with no citation at all?',
-     ['Citations always slow readers down', "It borrows the credibility of a real, checkable source for a claim that source never actually made", 'Numbered citations are harder to read'], 1,
+     ['It borrows the credibility of a real, checkable source for a claim that source never actually made', 'Citations always slow readers down', 'Numbered citations are harder to read'], 0,
      'A citation signals "verified", so a false one actively misleads rather than just omitting support.'),
     ('Citation [1] claims 45-day free returns; the source says 30 days. This citation is...',
      ['Genuine, since both are about returns', 'Fabricated: the source supports a weaker, different claim (30 days), and the answer inflated the number', 'Unverifiable'], 1,
@@ -69,7 +69,7 @@ QUIZ = [
      ['Check whether the cited document exists', 'Check whether the cited document actually supports the specific claim next to the citation, not just the general topic', 'Check how confidently the answer is worded'], 1,
      'Existence of the source and relevance to the topic are necessary but not sufficient; the claim itself must be verified against the text.'),
     ('A claim exactly restates what its cited source says, with no added numbers or conditions. This citation is...',
-     ['Fabricated, since it adds no new information', 'Genuine: an accurate restatement is exactly what a citation should be', 'Unverifiable without the original author'], 1,
+     ['Genuine: an accurate restatement is exactly what a citation should be', 'Fabricated, since it adds no new information', 'Unverifiable without the original author'], 0,
      'Genuine citations are not required to add anything; faithfully reflecting the source is the bar.'),
 ]
 HINTS = [

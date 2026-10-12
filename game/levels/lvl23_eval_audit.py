@@ -51,13 +51,13 @@ AGENT_TASK = ("The player found problems in this evaluation code. Apply ONLY the
 
 QUIZ = [
     ('Why is a robustness number from a weak attack meaningless?',
-     ['It is an upper bound only as good as the attack; a stronger attack could find far more failures', 'It is too low', 'Weak attacks are illegal'], 0,
+     ['It is too low', 'It is an upper bound only as good as the attack; a stronger attack could find far more failures', 'Weak attacks are illegal'], 1,
      'You are reporting what the evaluator managed, not what an attacker could.'),
     ('Dividing eps by 255 when your images are already in [0, 1] means...',
      ['Nothing', 'The attack is stronger', 'The attack is about 255 times weaker than you claim, so the model looks robust'], 2,
      'Units are the quietest bug in robustness evaluation.'),
     ('Your evaluation says a model is 98% robust, but a transfer attack from its inner network gets it to 0%. What happened?',
-     ['The transfer attack is unfair', 'The model is robust', 'The model masks its gradient; your attack followed a useless gradient'], 2,
+     ['The transfer attack is unfair', 'The model masks its gradient; your attack followed a useless gradient', 'The model is robust'], 1,
      'That is gradient masking, and the reason adaptive attacks are mandatory.'),
     ('How should you count an example when you run an attack with several random restarts?',
      ['Robust if the first attempt fails', 'Average over attempts', 'Robust only if EVERY attempt fails (worst case)'], 2,

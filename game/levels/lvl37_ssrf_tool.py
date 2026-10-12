@@ -46,17 +46,17 @@ AGENT_TASK = ("The player found problems in this tool. Apply ONLY the fixes thei
               "keep everything else unchanged, and say what you changed and why.")
 
 QUIZ = [
-    ("Why is SSRF dangerous even though the attacker never gets to make requests from their own machine?",
-     ['It is not dangerous, since the attacker has no direct access', "The server makes the request on the attacker's behalf, reaching internal addresses (like a cloud metadata endpoint) the attacker could never reach themselves", 'SSRF only affects static websites'], 1,
+    ('Why is SSRF dangerous even though the attacker never gets to make requests from their own machine?',
+     ['It is not dangerous, since the attacker has no direct access', 'SSRF only affects static websites', "The server makes the request on the attacker's behalf, reaching internal addresses (like a cloud metadata endpoint) the attacker could never reach themselves"], 2,
      'The server becomes a proxy into its own private network, including places that trust any request coming from inside.'),
     ("Why is a hostname blocklist (block 'metadata', 'internal', 'localhost') not enough?",
-     ["Raw IP addresses, alternate encodings, and other private ranges never appear on the list but reach the same places", 'Blocklists are slow', 'DNS always resolves instantly'], 0,
+     ['Blocklists are slow', 'Raw IP addresses, alternate encodings, and other private ranges never appear on the list but reach the same places', 'DNS always resolves instantly'], 1,
      'A blocklist enumerates known bad names; an attacker just uses the IP, or a different private address, instead.'),
     ('Why must the check run on the RESOLVED IP address, not just the URL string?',
-     ['A hostname can resolve to a private or link-local IP even though the hostname itself looks innocuous', 'IP addresses never change', 'It only matters for HTTPS'], 0,
+     ['It only matters for HTTPS', 'IP addresses never change', 'A hostname can resolve to a private or link-local IP even though the hostname itself looks innocuous'], 2,
      'DNS is attacker-influenceable text too; what matters is where the request actually lands.'),
     ('What does a cloud metadata endpoint like 169.254.169.254 typically expose with no authentication?',
-     ['Nothing of value', "Instance configuration and sometimes temporary cloud credentials for the running server", 'Only the server uptime'], 1,
+     ['Nothing of value', 'Instance configuration and sometimes temporary cloud credentials for the running server', 'Only the server uptime'], 1,
      'That is exactly why SSRF into cloud metadata is treated as a critical finding in real engagements.'),
 ]
 HINTS = [

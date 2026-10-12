@@ -46,13 +46,13 @@ QUIZ = [
      ['Exactly right', 'Stronger than it is: leaks in other forms go uncounted', 'Weaker than it is'], 1,
      'Missed leaks are missed attack successes, so the reported attack success rate comes out too low, making the defense look better than it is.'),
     ('Why should requests that errored or timed out be excluded from the denominator (not counted as failed attacks)?',
-     ['The API charges for them', 'They tell you nothing about whether the defense held, and counting them as failures inflates the defense', 'They are rare'], 1,
+     ['The API charges for them', 'They are rare', 'They tell you nothing about whether the defense held, and counting them as failures inflates the defense'], 2,
      'A crashed request is missing data, not a successful defense; counting it as a block overstates how well the defense performs.'),
     ('You observe 0 successes in 10 attempts. What does a correct 95% interval say?',
      ['The true rate could plausibly be as high as about 28%', 'The attack rate is exactly 0%', 'The test is invalid'], 0,
      'Small samples cannot rule out a substantial true rate; a naive formula wrongly collapses to zero width here.'),
     ('How should you validate a judge?',
-     ['Ask the model if the judge is right', 'Hand-label a set of examples (including tricky encodings and decoys) and measure its errors', 'Run it on the full benchmark and read the totals'], 1,
+     ['Hand-label a set of examples (including tricky encodings and decoys) and measure its errors', 'Ask the model if the judge is right', 'Run it on the full benchmark and read the totals'], 0,
      'A judge is a measuring instrument; calibrate it against ground truth before you trust its readings, not against its own output.'),
 ]
 PLAYBOOK = [

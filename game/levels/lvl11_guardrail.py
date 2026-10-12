@@ -55,16 +55,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ("A guard blocks every request containing the word 'password'. What is the most likely result?",
-     ['It blocks real attacks but also customers asking how to reset their password', 'High recall and few false alarms', 'It is perfectly safe'], 0,
+     ['High recall and few false alarms', 'It blocks real attacks but also customers asking how to reset their password', 'It is perfectly safe'], 1,
      'Single-keyword rules are cheap to write and expensive in false alarms; safety is never guaranteed by one keyword.'),
     ("Why check the model's REPLY and not only the user's message?",
-     ['Replies are shorter, so they are cheaper to scan', "Whatever the attacker's wording, a successful attack must show up in the reply", 'Users never attack'], 1,
+     ['Replies are shorter, so they are cheaper to scan', 'Users never attack', "Whatever the attacker's wording, a successful attack must show up in the reply"], 2,
      'The output guard catches attacks you did not anticipate, as long as they leak the thing you protect, regardless of reply length.'),
     ('Your output guard only looks for the secret as plain text. What gets through?',
-     ['Reversed, spaced out, encoded or split-up versions of the secret', 'Nothing', 'Only polite attacks'], 0,
+     ['Nothing', 'Reversed, spaced out, encoded or split-up versions of the secret', 'Only polite attacks'], 1,
      'The attacker chooses the form; a guard that only matches the literal string misses every transformed version.'),
     ('Why does the grader create new test conversations and a new secret every run?',
-     ['To confuse the model', 'So a guard memorised from the examples fails: it must generalise', 'To be slower'], 1,
+     ['To confuse the model', 'To be slower', 'So a guard memorised from the examples fails: it must generalise'], 2,
      'Overfitting to known examples is the default failure of ad-hoc filters; fresh secrets expose that.'),
 ]
 PLAYBOOK = [

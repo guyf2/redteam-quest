@@ -57,7 +57,7 @@ QUIZ = [
      ['Only test against uncompressed images and ignore JPEG', 'Use a differentiable approximation (resize, blur, noise) as a stand-in', 'Give up'], 1,
      'The attack needs the right kind of robustness, not a perfect simulator, and ignoring JPEG entirely leaves the attack untested against what the service actually does.'),
     ('Which of these makes your attack MORE robust but easier to notice?',
-     ['Fewer steps', 'Larger eps', 'Smaller eps'], 1,
+     ['Larger eps', 'Fewer steps', 'Smaller eps'], 0,
      'Robustness is bought with budget: a larger eps survives more transformations at the cost of visibility, which is the trade-off every physical-world attack faces.'),
 ]
 HINTS = [

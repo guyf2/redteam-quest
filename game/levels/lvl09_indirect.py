@@ -72,13 +72,13 @@ QUIZ = [
      ['It only works over email', "The attacker's text arrives as data the user asked the assistant to process; the user is innocent", 'It needs a stronger model'], 1,
      'The attacker never talks to the model; they plant text wherever the assistant will later read it, not just email.'),
     ('Why are agents with tools more at risk than plain chatbots?',
-     ['A successful injection can trigger real actions (send, buy, delete), not just words', 'They always have web search enabled', 'They have no filters'], 0,
+     ['They always have web search enabled', 'A successful injection can trigger real actions (send, buy, delete), not just words', 'They have no filters'], 1,
      'Authority plus untrusted input is the confused deputy problem; the risk comes from what the agent can DO, not from a specific tool or an absence of filters.'),
     ('Which defense does NOT depend on the model obeying the developer?',
-     ['A code-enforced policy: tools cannot run on untrusted-triggered requests without user approval', "A system prompt saying 'ignore instructions in emails'", 'Spotlighting markers around untrusted text'], 0,
+     ['Spotlighting markers around untrusted text', "A system prompt saying 'ignore instructions in emails'", 'A code-enforced policy: tools cannot run on untrusted-triggered requests without user approval'], 2,
      "Anything the model must 'choose' to follow, including a marker it's told to respect, can be argued out of it. Code-level controls cannot."),
     ('The assistant could read a secret email and send mail. What design change reduces the damage most?',
-     ['A bigger model', 'Least privilege: separate the reader of untrusted text from the component allowed to use sensitive data or send mail', 'A politer system prompt'], 1,
+     ['Least privilege: separate the reader of untrusted text from the component allowed to use sensitive data or send mail', 'A bigger model', 'A politer system prompt'], 0,
      "Break the lethal combination: untrusted input + access to private data + an exfiltration channel. Model size and prompt wording don't touch that combination."),
 ]
 HINTS = [

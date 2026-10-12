@@ -52,13 +52,13 @@ QUIZ = [
      ['...and ascends it', '...and descends it', '...and ignores its sign'], 1,
      'Untargeted ascends the loss of the true class to escape it; targeted descends the loss of the wanted class to walk toward it.'),
     ('Why does a targeted attack usually need more steps than an untargeted one at the same budget?',
-     ["One specific class is a much smaller region of input space than 'anything but the true class'", 'It needs a bigger model to compute', 'Gradients toward a specific class are noisier than gradients away from the true class'], 0,
+     ['It needs a bigger model to compute', "One specific class is a much smaller region of input space than 'anything but the true class'", 'Gradients toward a specific class are noisier than gradients away from the true class'], 1,
      'Landing in one particular class is a harder target than merely escaping the true class, so more small steps are needed to reach it precisely.'),
     ("Your agent's code makes 99% of digits misclassified, but only 12% reach the target class. What did it build?",
-     ['A correct targeted attack with a low success rate', "An untargeted attack, probably (it ascended the true-class loss instead of descending the target's)", 'A broken grader'], 1,
+     ['A correct targeted attack with a low success rate', 'A broken grader', "An untargeted attack, probably (it ascended the true-class loss instead of descending the target's)"], 2,
      'High error with a low target-hit rate is the signature of an untargeted attack: it is good at making the model wrong, just not wrong in the chosen direction.'),
     ('Why is a targeted attack scarier for a defender than an untargeted one?',
-     ["The attacker chooses the outcome (e.g. 'speed limit' instead of 'stop')", 'It runs faster', 'It needs no gradients'], 0,
+     ['It needs no gradients', 'It runs faster', "The attacker chooses the outcome (e.g. 'speed limit' instead of 'stop')"], 2,
      'Choosing the outcome turns misclassification into controlled misbehaviour, which is a much more useful capability for an attacker than random errors.'),
 ]
 HINTS = [

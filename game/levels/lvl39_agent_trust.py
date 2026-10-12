@@ -44,13 +44,13 @@ AGENT_TASK = ("Apply ONLY the fixes the player's instructions describe, keep eve
 
 QUIZ = [
     ("Why does checking a 'FROM: scheduler-agent [trusted]' line inside the message body fail to establish identity?",
-     ['It is slow to parse', "That line is free text the SENDER wrote; anyone who can send a message can write any claim they like inside it", 'It only works for short messages'], 1,
-     "A claim inside content an attacker controls is not evidence of anything; it is just more content."),
+     ['That line is free text the SENDER wrote; anyone who can send a message can write any claim they like inside it', 'It is slow to parse', 'It only works for short messages'], 0,
+     'A claim inside content an attacker controls is not evidence of anything; it is just more content.'),
     ('What should identity be based on instead, in this simulated system?',
-     ['A longer, harder-to-fake sentence in the body', "A separate field set by the transport layer itself (verified_sender), never by anything inside the message body", 'Asking the sending agent to confirm twice'], 1,
-     "Trust must key off something the content cannot influence: a channel-level property, not a textual claim."),
+     ['A longer, harder-to-fake sentence in the body', 'A separate field set by the transport layer itself (verified_sender), never by anything inside the message body', 'Asking the sending agent to confirm twice'], 1,
+     'Trust must key off something the content cannot influence: a channel-level property, not a textual claim.'),
     ("A message's verified_sender is 'scheduler-agent2'. The trusted list contains 'scheduler-agent'. Your check should...",
-     ["Trust it, since it's almost the same name", 'Reject it: it is not an exact match, and look-alike identifiers are a standard spoofing trick', 'Trust it only if the body also says "trusted"'], 1,
+     ["Trust it, since it's almost the same name", 'Trust it only if the body also says "trusted"', 'Reject it: it is not an exact match, and look-alike identifiers are a standard spoofing trick'], 2,
      "Exact matching closes off the look-alike-name trick, the same lesson as the permission-policy level's look-alike email addresses."),
     ('How does this level mirror the permission-policy level from the opposite direction?',
      ['It does not; they are unrelated', "The permission-policy level required actions to trace back to the user's OWN words, not message content; here, identity must trace back to a CHANNEL property, not message content", 'Both levels use the same function signature'], 1,

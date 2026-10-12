@@ -55,16 +55,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('What does model extraction need from the attacker?',
-     ['Only the ability to query the model and read its outputs', "The victim's weights", "The victim's training data"], 0,
+     ["The victim's training data", "The victim's weights", 'Only the ability to query the model and read its outputs'], 2,
      "Input-output access is enough to train a copy; the weights and original data are exactly what you don't have."),
     ('Why are random-noise queries a poor choice?',
-     ['Noise is expensive', 'Noise is illegal', "The victim's answers on noise say little about how it treats real digits"], 2,
+     ['Noise is expensive', "The victim's answers on noise say little about how it treats real digits", 'Noise is illegal'], 1,
      'Queries should come from (or near) the distribution the copy will be used on.'),
     ('Why is extraction a stepping stone to adversarial examples?',
      ['It makes the model smaller', 'It is not', 'A faithful copy gives white-box gradients, and attacks crafted on it transfer to the original'], 2,
      'That is the surrogate-model idea from the transfer level, now built by the attacker instead of handed to them.'),
     ("Which API change raises the attacker's cost the most for a given accuracy of the victim?",
-     ['Returning full probability vectors', 'Returning more decimals', 'Returning only the top label and rate-limiting / monitoring queries'], 2,
+     ['Returning full probability vectors', 'Returning only the top label and rate-limiting / monitoring queries', 'Returning more decimals'], 1,
      'Less information per query and a cap on volume both increase cost, though neither prevents extraction.'),
 ]
 HINTS = [

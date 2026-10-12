@@ -53,16 +53,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('What does adversarial training do?',
-     ['Trains the model on attacks crafted against it, so it learns to resist them', 'Adds noise to the labels', 'Removes the last layer'], 0,
+     ['Adds noise to the labels', 'Trains the model on attacks crafted against it, so it learns to resist them', 'Removes the last layer'], 1,
      'Minimise the loss on the worst inputs the attacker can find inside the budget.'),
     ('A model trained with single-step FGSM scores 84% against FGSM and 0% against PGD. This is called...',
-     ['Overfitting to the test set', 'Underfitting', 'Catastrophic overfitting (a form of gradient masking)'], 2,
+     ['Catastrophic overfitting (a form of gradient masking)', 'Underfitting', 'Overfitting to the test set'], 0,
      'The model learned to fool its own weak attack. Always evaluate with a stronger attack than the one you trained on.'),
     ('Why does the grader take the WORST case over several attack restarts?',
-     ['Restarts make the attack use less memory', 'An attack that fails once may succeed from another start; robustness means surviving all of them', 'Randomness is bad'], 1,
+     ['An attack that fails once may succeed from another start; robustness means surviving all of them', 'Restarts make the attack use less memory', 'Randomness is bad'], 0,
      'A defense is only as strong as the best attack against it.'),
     ('What is the usual cost of adversarial training?',
-     ['None', 'A smaller model', 'Lower clean accuracy and several times more compute'], 2,
+     ['None', 'Lower clean accuracy and several times more compute', 'A smaller model'], 1,
      'Robustness is purchased with accuracy and training cost.'),
 ]
 HINTS = [

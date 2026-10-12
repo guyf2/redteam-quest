@@ -65,13 +65,13 @@ QUIZ = [
      ['The injection itself does nothing; the harm comes from what the model is allowed to do', 'Injections are all equal', 'Severity is decided by the attacker'], 0,
      'A steerable model with no tools is a nuisance; with a refund API it is a loss.'),
     ('A customer receiving their own order history from the assistant is...',
-     ['High severity', 'Medium', 'Informational: it is intended behaviour, not a vulnerability'], 2,
+     ['High severity', 'Informational: it is intended behaviour, not a vulnerability', 'Medium'], 1,
      'Recognising non-issues keeps a report credible.'),
     ('Which factor most increases the severity of F1?',
      ['It is automatic, repeatable, needs no victim action and triggered no alert', 'The attack is clever', 'It uses email'], 0,
      'Low precondition + repeatable + undetected = critical.'),
     ("You rate every finding 'critical' to get attention. What happens?",
-     ['Everything gets fixed', 'Nothing', 'Readers stop trusting your ratings, and the real critical one is lost in the noise'], 2,
+     ['Everything gets fixed', 'Readers stop trusting your ratings, and the real critical one is lost in the noise', 'Nothing'], 1,
      'Calibration is the product you are selling.'),
 ]
 HINTS = [

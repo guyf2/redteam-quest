@@ -58,13 +58,13 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('What are the first steps of any threat model?',
-     ['Understand what the system is and what it can do, then ask what can go wrong', 'Writing exploits', 'Choosing a firewall'], 0,
+     ['Choosing a firewall', 'Writing exploits', 'Understand what the system is and what it can do, then ask what can go wrong'], 2,
      'You cannot rank risks for a system you have not mapped.'),
     ('Why is the product likelihood x impact used, rather than impact alone?',
-     ['It is traditional', 'It is easier to compute', 'A catastrophic but nearly impossible event and a likely nuisance should not tie; the product balances both'], 2,
+     ['It is traditional', 'A catastrophic but nearly impossible event and a likely nuisance should not tie; the product balances both', 'It is easier to compute'], 1,
      'Risk is exposure times consequence.'),
     ('Which finding should usually rank highest for SupportBot?',
-     ['The system prompt can be extracted', "Outsiders' emails can steer the refund API", 'Error messages show the framework version'], 1,
+     ["Outsiders' emails can steer the refund API", 'The system prompt can be extracted', 'Error messages show the framework version'], 0,
      'Untrusted input reaching a tool that moves money is the combination that causes real loss.'),
     ("What is wrong with the mitigation 'be careful with user input'?",
      ['Nothing', 'It is too long', 'It is not specific or testable: a mitigation should name a control, such as user-justified permissions or rate limits'], 2,

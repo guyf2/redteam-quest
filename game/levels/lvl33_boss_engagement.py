@@ -45,7 +45,7 @@ QUIZ = [
      ['Stop, leave it out of the findings, and tell the client you saw something outside scope without exploring further', 'Include it as a finding', 'Test it fully'], 0,
      'Authorisation defines what you may test and what you may report on.'),
     ('Why must the raw notes and credentials be removed from the deliverable?',
-     ['They are long', 'The report is forwarded and stored widely; it must not become a second incident', 'Clients do not read notes'], 1,
+     ['They are long', 'Clients do not read notes', 'The report is forwarded and stored widely; it must not become a second incident'], 2,
      'A document that leaks the thing it describes is a new vulnerability.'),
 ]
 HINTS = ["Go note by note and decide: finding, duplicate, out of scope, not an issue, or informational.", "Order the findings from critical down. Check the executive summary against the facts in N1 and the deadline in the rules of engagement."]
