@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ml-security-lab"
+version = "0.1.0"
+description = "Local ML security lab environment"
+requires-python = ">=3.12"
+dependencies = [
+    # PyTorch with CUDA support (Blackwell sm_120)
+    "torch>=2.5.0",
+    "torchvision>=0.20.0",
+
+    # Core ML packages
+    "transformers>=4.40.0",
+    "accelerate>=0.27.0",
+    "bitsandbytes>=0.41.0",
+    "pillow>=10.0.0",
+    "matplotlib>=3.8.0",
+
+    # Adversarial/Security tools
+    "torchattacks>=1.13.0",
+    "adversarial-robustness-toolbox>=1.17.0",
+    "garak>=0.9.0",
+    "pyrit>=0.2.0",
+
+    # AI inspection and LLM interaction
+    "inspect-ai>=0.1.0",
+    "openai>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+]
+
+[tool.uv]
+index-url = "https://pypi.org/simple"
+# Add PyTorch index for CUDA-specific wheels
+extra-index-url = "https://download.pytorch.org/whl/cu121"

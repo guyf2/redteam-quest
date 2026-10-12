@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RedTeam Quest</title>
+<style>
+  :root { --bg:#0f1218; --card:#171c26; --card2:#1d2431; --line:#2a3344; --fg:#e8ecf3; --dim:#93a0b5; --hot:#ff6b5e; --gold:#ffc063; --ok:#45c46e; --bad:#ff6262; --blue:#4d7cff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.55 system-ui,-apple-system,sans-serif; }
+  button { font:inherit; cursor:pointer; } button:disabled { opacity:.5; cursor:not-allowed; }
+  :focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
+  header { display:flex; gap:14px; align-items:center; padding:10px 20px; background:var(--card); border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  h1 { margin:0; font-size:18px; } h1 em { color:var(--hot); font-style:normal; }
+  nav { display:flex; gap:6px; flex-wrap:wrap; }
+  .tab { max-width:230px; padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:none; color:var(--fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tab.active { border-color:var(--hot); background:#2a1b1d; } .tab.done { border-color:#2c5a3b; } .tab.locked { opacity:.45; cursor:not-allowed; }
+  #score { margin-left:auto; text-align:right; font-size:13px; color:var(--dim); } #score b { color:var(--gold); font-size:15px; }
+  #bar { width:150px; height:6px; background:var(--line); border-radius:3px; margin:3px 0 0 auto; overflow:hidden; } #bar i { display:block; height:100%; background:var(--gold); transition:width .6s; }
+  .banner { margin:12px 20px 0; padding:10px 14px; border-radius:8px; border:1px solid var(--line); background:var(--card2); } .banner.bad { border-color:var(--bad); background:#2a1717; }
+  .banner h3 { margin:0 0 4px; font-size:14px; } .banner ol { margin:4px 0 6px 18px; padding:0; }
+  #guide { margin:14px 20px 0; padding:12px 16px; border:1px solid var(--line); border-radius:10px; background:var(--card); }
+  #steps { display:flex; gap:6px; list-style:none; padding:0; margin:0 0 10px; flex-wrap:wrap; }
+  #steps li { display:flex; align-items:center; gap:8px; padding:4px 12px 4px 4px; border-radius:20px; background:var(--card2); color:var(--dim); font-size:13px; }
+  #steps li b { width:22px; height:22px; border-radius:50%; display:grid; place-items:center; background:var(--line); font-size:12px; color:var(--fg); }
+  #steps li.done { color:var(--ok); } #steps li.done b { background:var(--ok); color:#0b1a10; }
+  #steps li.current { color:var(--fg); outline:1px solid var(--gold); } #steps li.current b { background:var(--gold); color:#2a1d00; }
+  #next { display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:16px; } #next span { flex:1; min-width:240px; } #next strong { color:var(--gold); }
+  main { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:16px; padding:14px 20px 40px; max-width:1400px; margin:0 auto; }
+  @media (max-width:950px) { main { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+  .card.locked { opacity:.55; }
+  h2 { margin:0 0 10px; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--dim); display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .tag { font-size:11px; letter-spacing:0; text-transform:none; padding:2px 9px; border-radius:10px; background:var(--line); color:var(--dim); } .tag.you { background:#1d3a28; color:var(--ok); } .tag.agent { background:#1f2c55; color:#9db8ff; }
+  p { margin:0 0 10px; white-space:pre-wrap; } .dim { color:var(--dim); } .sm { font-size:13px; }
+  pre { margin:0; white-space:pre-wrap; font:13px/1.5 ui-monospace,Menlo,monospace; }
+  textarea { width:100%; background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:10px; font:13px/1.5 ui-monospace,Menlo,monospace; resize:vertical; }
+  #spec { min-height:60px; height:120px; max-height:70vh; resize:none; } .grip { height:14px; margin:2px 0 8px; cursor:ns-resize; display:flex; align-items:center; justify-content:center; touch-action:none; user-select:none; } .grip::before { content:''; width:56px; height:4px; border-radius:2px; background:var(--line); transition:background .15s, width .15s; } .grip:hover::before, .grip.drag::before { background:var(--gold); width:84px; }
+  .sizerOld { display:flex; gap:4px; align-items:center; margin:6px 0 2px; font-size:12px; color:var(--dim); } .sizer button { background:none; border:1px solid var(--line); color:var(--fg); border-radius:6px; padding:1px 9px; font-size:13px; line-height:1.4; } .sizer button:hover { border-color:var(--dim); } #code { min-height:150px; height:300px; max-height:85vh; resize:none; }
+  .go { background:var(--hot); color:#fff; border:0; border-radius:8px; padding:9px 16px; font-weight:600; } .go.blue { background:var(--blue); }
+  .ghost { background:none; color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:6px 12px; } .ghost:hover:not(:disabled) { border-color:var(--dim); }
+  .row { display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; } .chip { background:var(--card2); border:1px solid var(--line); color:var(--fg); border-radius:16px; padding:3px 12px; font-size:13px; }
+  .chip:hover { border-color:var(--blue); }
+  #checks { list-style:none; margin:8px 0 0; padding:0; display:flex; gap:4px 14px; flex-wrap:wrap; font-size:13px; color:var(--dim); } #checks li.on { color:var(--ok); }
+  .pulse:not(:disabled) { animation:pulse 1.6s infinite; } @keyframes pulse { 0%,100% { box-shadow:0 0 0 0 rgba(255,192,99,.55); } 50% { box-shadow:0 0 0 7px rgba(255,192,99,0); } }
+  .spin { display:inline-block; width:13px; height:13px; border:2px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%; animation:sp .8s linear infinite; vertical-align:-2px; margin-right:6px; } @keyframes sp { to { transform:rotate(360deg); } }
+  .result { margin-top:12px; padding:12px; border-radius:8px; border:1px solid var(--line); } .result.ok { border-color:var(--ok); background:#12231a; } .result.fail { border-color:#7a4b2a; background:#241a12; }
+  .result h3 { margin:0 0 8px; font-size:16px; }
+  .meter { display:grid; grid-template-columns:150px 1fr 44px; align-items:center; gap:8px; font-size:13px; margin:4px 0; } .meter div { height:10px; background:var(--line); border-radius:5px; overflow:hidden; } .meter i { display:block; height:100%; border-radius:5px; transition:width .8s; }
+  .art { margin-top:10px; line-height:1.15; background:var(--bg); padding:8px; border-radius:6px; overflow:auto; }
+  .alert { margin-top:8px; padding:8px 10px; border-left:3px solid var(--gold); background:var(--card2); white-space:pre-wrap; }
+  .opt { display:block; width:100%; text-align:left; margin:6px 0; padding:10px 12px; background:var(--card2); border:1px solid var(--line); border-radius:8px; color:var(--fg); } .opt.sel { border-color:var(--gold); background:#2a2415; }
+  .why { padding:8px 10px; margin:6px 0; border-radius:6px; background:var(--card2); font-size:14px; } .why.good { border-left:3px solid var(--ok); } .why.wrong { border-left:3px solid var(--bad); }
+  #toast { position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:8px; z-index:5; } #toast div { padding:10px 14px; border-radius:8px; background:var(--card2); border:1px solid var(--line); max-width:340px; } #toast .e { border-color:var(--bad); }
+  .xp { position:fixed; left:50%; top:30%; font-size:44px; font-weight:800; color:var(--gold); animation:rise 1.8s forwards; pointer-events:none; z-index:6; } @keyframes rise { from { opacity:1; transform:translate(-50%,0); } to { opacity:0; transform:translate(-50%,-80px); } }
+
+  .vtabs { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; } .vtab { background:none; border:1px solid var(--line); color:var(--dim); border-radius:16px; padding:3px 12px; font-size:13px; } .vtab.on { color:var(--fg); border-color:var(--gold); }
+  .vrow { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; margin:8px 0; } .vrow.ctl { align-items:center; } .vrow.top { flex-wrap:wrap; } .vrow input[type=range] { width:200px; }
+  .vfig { margin:0; text-align:center; width:140px; } .vfig figcaption { font-size:12px; color:var(--dim); margin-top:4px; }
+  .vcanvas { width:140px; height:140px; image-rendering:pixelated; border:1px solid var(--line); border-radius:6px; background:#000; }
+  .vbars { display:flex; gap:8px; align-items:flex-end; height:100px; margin:10px 0 4px; } .vcol { display:flex; flex-direction:column; align-items:center; font-size:12px; color:var(--dim); padding:2px 3px; border-radius:4px; } .vcol.true { outline:1px solid var(--fg); }
+  .vpair { display:flex; gap:2px; align-items:flex-end; height:72px; } .vpair i { width:8px; display:block; border-radius:2px 2px 0 0; min-height:1px; } .vpair .c { background:#6c7689; } .vpair .a { background:var(--gold); }
+  .vinfo { font-size:14px; } .vinfo .sel { color:var(--gold); font-weight:600; } .vbadge { display:inline-block; margin:6px 0; padding:2px 10px; border-radius:10px; font-size:13px; } .vbadge.ok { background:#1d3a28; color:var(--ok); } .vbadge.bad { background:#3a1d1d; color:var(--bad); }
+  .vchart { width:100%; max-width:560px; } .vchart .grid { stroke:var(--line); } .vchart .tick { fill:var(--dim); font-size:11px; } .vchart .legend { font-size:12px; font-weight:600; } .vchart .mark { stroke:var(--dim); stroke-dasharray:4 4; }
+  .vland { width:100%; max-width:420px; aspect-ratio:1; border-radius:8px; border:1px solid var(--line); } .vside { display:flex; flex-direction:column; gap:6px; min-width:200px; flex:1; } .vradio { cursor:pointer; }
+  .chat { position:relative; height:380px; min-height:160px; max-height:80vh; resize:none; overflow-y:auto; scroll-behavior:smooth; scroll-snap-type:y proximity; scrollbar-width:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:10px; padding:2px 6px 2px 0; }
+  .chat::-webkit-scrollbar { width:12px; } .chat::-webkit-scrollbar-track { background:var(--bg); border-radius:6px; } .chat::-webkit-scrollbar-thumb { background:#3a4560; border-radius:6px; border:2px solid var(--bg); min-height:48px; } .chat::-webkit-scrollbar-thumb:hover { background:#52618a; }
+  .msg { scroll-snap-align:start; padding:8px 12px; border-radius:10px; max-width:94%; white-space:pre-wrap; font-size:14px; }
+  .msg.you { align-self:flex-end; background:#1f2c55; } .msg.agent { align-self:flex-start; background:var(--card2); border:1px solid var(--line); white-space:normal; } .msg small { display:block; color:var(--dim); font-size:11px; margin-bottom:2px; }
+  .md p { margin:0 0 8px; } .md ul, .md ol { margin:4px 0 8px 20px; padding:0; } .md h4 { margin:8px 0 4px; font-size:14px; } .md > :last-child { margin-bottom:0; }
+  .md code { background:var(--bg); padding:1px 5px; border-radius:4px; font:12.5px ui-monospace,Menlo,monospace; } .md pre.mdcode { background:var(--bg); padding:8px 10px; border-radius:6px; overflow:auto; margin:6px 0; } .md pre.mdcode code { padding:0; }
+  header nav { order:5; width:100%; gap:10px; } .wgroup { display:flex; gap:6px; align-items:center; flex-wrap:wrap; padding-right:10px; border-right:1px solid var(--line); } .wgroup:last-child { border:0; }
+  .wname { font-size:11px; letter-spacing:.8px; text-transform:uppercase; color:var(--dim); } .chip.on { border-color:var(--gold); color:var(--gold); }
+  .msg.target { align-self:flex-start; background:var(--card2); border:1px solid var(--line); white-space:pre-wrap; } .evt { margin-top:6px; padding:5px 8px; border-left:3px solid var(--hot); background:#2a1717; font:12px ui-monospace,Menlo,monospace; white-space:pre-wrap; }
+  .goal { padding:8px 12px; border-left:3px solid var(--gold); background:var(--card2); border-radius:6px; margin-bottom:10px; } input.txt { background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:13px ui-monospace,Menlo,monospace; flex:1; min-width:200px; }
+  .vtable { border-collapse:collapse; width:100%; font-size:13px; } .vtable th, .vtable td { border:1px solid var(--line); padding:5px 8px; } .vtable th { color:var(--dim); font-weight:600; text-align:left; font-size:12px; }
+  .chat { height:300px; } .chat.big { height:72vh; max-height:none; } .msg { font-size:13px; line-height:1.45; padding:6px 10px; } .msg small { font-size:10.5px; } .md p { margin:0 0 5px; } .md ul, .md ol { margin:2px 0 5px 18px; } .md h4 { font-size:13px; margin:5px 0 3px; }
+  .chat.big ~ * { } #agentCard.expanded { position:fixed; inset:60px 4vw 20px 4vw; z-index:9; box-shadow:0 0 0 100vmax rgba(0,0,0,.6); overflow:auto; } #agentCard.expanded .chat { height:calc(100vh - 480px) !important; min-height:160px; } #agentCard.expanded #spec { min-height:70px; } #agentCard.expanded #chatGrip { display:none; }
+  .t-attack { --wc:#ff6b5e; } .t-defense { --wc:#4d9dff; } .t-craft { --wc:#ffc063; } .tab { border-left:3px solid var(--wc, var(--line)); } .wname { color:var(--wc, var(--dim)); }
+  .typetag { font-size:10px; letter-spacing:.6px; text-transform:uppercase; padding:1px 7px; border-radius:8px; border:1px solid var(--wc); color:var(--wc); }
+  #mapPanel { margin:12px 20px 0; padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:var(--card); } #mapGrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
+  .wcard { border:1px solid var(--line); border-top:3px solid var(--wc); border-radius:8px; padding:10px 12px; background:var(--card2); } .wcard h3 { margin:0 0 2px; font-size:14px; display:flex; gap:8px; align-items:center; } .wcard p { margin:0 0 8px; font-size:12.5px; color:var(--dim); }
+  .lrow { display:flex; gap:8px; align-items:center; width:100%; text-align:left; background:none; border:0; border-top:1px solid var(--line); color:var(--fg); padding:5px 2px; font-size:13px; } .lrow:hover:not(:disabled) { background:#ffffff0d; } .lrow .st { width:18px; } .lrow .ti { flex:1; } .lrow .kd { font-size:11px; color:var(--dim); } .lrow .pts { font-size:11px; color:var(--gold); width:46px; text-align:right; } .lrow.locked { opacity:.45; }
+  .lrow.cur { background:#ff6b5e1f; box-shadow:inset 3px 0 0 var(--hot); } #mapBtn { max-width:360px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .legend { display:flex; gap:14px; font-size:12px; color:var(--dim); margin:0 0 10px; flex-wrap:wrap; } .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:-1px; }
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; margin:0 0 8px; } .seg button { background:none; border:0; color:var(--dim); padding:5px 12px; font-size:13px; } .seg button.on { background:var(--card2); color:var(--fg); box-shadow:inset 0 -2px 0 var(--gold); }
+  #askSel { position:absolute; z-index:8; display:none; background:var(--gold); color:#2a1d00; border:0; border-radius:14px; padding:4px 12px; font-size:12px; font-weight:600; box-shadow:0 2px 8px #0008; }
+  [hidden] { display:none !important; }
+  .howto { margin:0; padding-left:22px; } .howto li { margin:3px 0; }
+  .pb { border-left:3px solid var(--gold); background:var(--card2); border-radius:6px; padding:8px 11px; margin:8px 0; }
+  .pb b { color:var(--gold); } .pb .why { color:var(--dim); font-size:13px; margin:3px 0; } .pb .try { font-size:13px; } .pb .try::before { content:'Try: '; color:var(--ok); }
+  .exp { margin:10px 0 0; padding:10px; background:var(--bg); border:1px solid var(--line); border-radius:6px; white-space:pre-wrap; font:12.5px/1.5 ui-monospace,Menlo,monospace; }
+  .batch { margin:6px 0; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--card2); } .batch h4 { margin:0 0 6px; font-size:13px; } .batch .r { font-size:12.5px; padding:4px 8px; margin:3px 0; border-left:3px solid var(--line); white-space:pre-wrap; } .batch .r.hit { border-left-color:var(--ok); } .batch .r small { color:var(--dim); }
+  .tip { margin-top:6px; padding:6px 10px; border-left:3px solid var(--blue); background:var(--card2); border-radius:6px; font-size:13px; } .tip::before { content:'Tip: '; color:var(--blue); font-weight:600; }
+  .seg button.work::after { content:' \u25cf'; color:var(--gold); animation:blink 1s infinite; } @keyframes blink { 50% { opacity:.2; } }
+  .stopbtn { border-color:var(--bad); color:var(--bad); } .stopbtn:hover { background:#ff62621a; }
+</style>
+</head>
+<body>
+<header>
+  <h1>RedTeam <em>Quest</em></h1>
+  <button class="ghost sm" id="mapBtn">🗺 Map</button>
+  <button class="ghost sm" id="helpBtn">? How to play</button>
+  <div id="score"></div>
+</header>
+<section id="mapPanel" hidden aria-label="Map of all levels"><div class="legend"><span><i style="background:#ff6b5e"></i>Attack: break models</span><span><i style="background:#4d9dff"></i>Defense: protect and verify</span><span><i style="background:#ffc063"></i>Craft: professional deliverables</span><button class="ghost sm" id="mapClose" style="margin-left:auto">Close</button></div><div id="mapGrid"></div></section>
+<div class="banner bad" id="offline" role="alert" hidden><b>Lost connection to the game server.</b> It may have stopped. Start it again with <code>./play.sh</code> in the project folder, then reload this page. Your progress is saved.</div>
+<div class="banner" id="help" hidden>
+  <h3>How to play</h3>
+  <ol><li><b>Read</b> the mission on the left.</li><li><b>Tell the agent</b> what you want. You are the commander, the agent writes the code.</li><li><b>Review &amp; test</b> what it wrote. The grader attacks a real model with your code.</li><li><b>Take the quiz</b> to lock in what you learned and earn bonus XP.</li></ol>
+  <button class="ghost sm" id="helpClose">Got it</button>
+</div>
+<section id="guide" aria-live="polite"><ol id="steps"></ol><div id="next"><span id="nextText"></span><button class="go blue" id="nextBtn" hidden>Next level →</button></div></section>
+<main>
+  <div>
+    <div class="card"><h2>Mission <span class="tag you">you read</span> <span class="tag" id="kind"></span> <span class="typetag" id="worldTag"></span></h2><p id="intro"></p></div>
+    <div class="card" id="howtoCard" hidden><h2>How to play <span class="tag you">read first</span></h2><ol id="howto" class="howto"></ol></div>
+    <div class="card" id="methodCard" hidden><h2>Method <span class="tag you">how to attack systematically</span></h2><ol id="method" class="howto"></ol></div>
+    <div class="card"><h2>The idea</h2><div id="concept"></div></div>
+    <div class="card" id="playbookCard" hidden><h2>How to approach it <span class="tag">techniques</span></h2><div id="playbook"></div><pre class="exp" id="experiments" hidden></pre></div>
+    <div class="card" id="vizCard"><h2>Visualize it <span class="tag">interactive</span></h2><div id="viz"></div></div>
+    <div class="card"><h2>Goal</h2><p id="win"></p></div>
+    <div class="card"><h2>Hints <span class="tag">each costs XP</span></h2><div id="hints" class="sm dim">No hints used.</div>
+      <div class="row"><button class="ghost" id="hintBtn">Reveal next hint</button></div></div>
+  </div>
+  <div>
+    <div class="card" id="targetCard" hidden><h2>Target <span class="tag">a live local model, attack it</span></h2>
+      <div class="chips" id="rungs"></div><div class="goal" id="rungGoal"></div><div class="tip" id="rungTip" hidden></div>
+      <div class="chat" id="tchat" aria-live="polite"></div>
+      <textarea id="tinput" aria-label="Your message to the target"></textarea>
+      <div class="row"><button class="go" id="tSend">Send to target</button><button class="ghost" id="tBatch" title="Send this same message 5 times in fresh conversations and see how often it works">Test 5×</button><button class="ghost stopbtn" id="stopTarget" hidden>■ Stop</button><button class="ghost sm" id="tClear">Clear this conversation</button><span class="dim sm" id="tNote">Ctrl+Enter sends. Models are random: try again if it almost worked.</span></div>
+      <div class="row" id="submitRow" hidden><input class="txt" id="tAnswer" aria-label="Your answer"><button class="go blue" id="tSubmit">Submit</button></div>
+      <div id="tResult" class="alert" hidden></div></div>
+    <div class="card" id="agentCard"><h2 id="specTitle">Your agent <span class="tag you">you direct</span></h2>
+      <div class="seg" id="modeSeg"><button id="mBuild">🔧 Build agent</button><button id="mGuide">💡 Guide</button></div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+      <div class="grip" id="chatGrip" role="separator" aria-orientation="horizontal" title="Drag to resize the chat history" aria-label="Resize chat history"></div>
+      <div class="chips" id="gchips" hidden></div>
+      <div class="chips" id="chips"></div>
+      <textarea id="spec" aria-label="Message to your agent"></textarea>
+      <div class="grip" id="specGrip" role="separator" aria-orientation="horizontal" title="Drag to resize the message box" aria-label="Resize message box"></div>
+      <ul id="checks"></ul>
+            <div class="row"><button class="go blue" id="agentBtn">Send</button><button class="ghost stopbtn" id="stopAgent" hidden>■ Stop</button><button id="askSel" hidden>💡 Ask the guide</button><button class="ghost sm" id="expandBtn" title="Make the conversation bigger">⤢ Expand</button><button class="ghost sm" id="chatResetBtn" title="Forget this conversation and start a new one">New conversation</button><span class="dim sm" id="agentNote">Ctrl+Enter sends. The agent remembers the conversation.</span></div></div>
+    <div class="card" id="codeCard"><h2>The code <span class="tag agent">agent writes, you review</span> <span class="dim" id="file" style="text-transform:none;letter-spacing:0"></span></h2>
+      <textarea id="code" spellcheck="false" aria-label="Attack code"></textarea>
+      <div class="grip" id="codeGrip" role="separator" aria-orientation="horizontal" title="Drag to resize the code box" aria-label="Resize code box"></div>
+      <div class="row"><button class="ghost" id="explainBtn">Explain this code</button><button class="ghost" id="explainSelBtn" disabled title="Select some lines in the code box first">Explain selected lines</button><span class="dim sm" id="selInfo">Select lines to ask about them.</span><button class="ghost" id="resetBtn">Reset to starting code</button></div></div>
+    <div class="card" id="graderCard"><h2>Grader <span class="tag">runs your code against a live model</span></h2>
+      <div class="row" style="margin-top:0"><button class="go" id="checkBtn">Run grader</button><button class="ghost stopbtn" id="stopCheck" hidden>■ Stop</button><span class="dim sm" id="checkNote"></span></div>
+      <div id="out" aria-live="polite"></div></div>
+    <div class="card locked" id="quizCard"><h2>Quiz <span class="tag">+10 XP bonus</span></h2><div id="quizBody"></div></div>
+  </div>
+</main>
+<div id="toast"></div>
+<script src="/viz.js"></script>
+<script src="/viz_plugins.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.createElement(tag), props); e.append(...kids); return e; };
+const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+const LABELS = { hack: ['Learn', 'Attack', 'Capture', 'Quiz'], delegate: ['Learn', 'Write spec', 'Review & test', 'Quiz'], audit: ['Learn', 'Spot the bug', 'Fix it', 'Quiz'] };
+let rung = 0, hist = {}, tbusy = false;
+let cur = 1, st = null, L = null, ran = false, lastOk = false, lastMsg = '', dirty = false, codeStale = false;
+let chat = [], memo = { build: [], guide: [] }, who = 'build', pending = { build: false, guide: false }, quizOpen = false, qi = 0, answers = [], qres = null, saveTimer = null;
+
+function toast(msg, err) { const t = el('div', { textContent: msg, className: err ? 'e' : '' }); $('toast').append(t); setTimeout(() => t.remove(), 4500); }
+function setOnline(v) { $('offline').hidden = v; }
+async function api(path, body) {
+  let r;
+  try { r = await fetch('/api/' + path, body === undefined ? {} : { method: 'POST', body: JSON.stringify(body) }); }
+  catch (e) { setOnline(false); throw e; }
+  setOnline(true);
+  const j = await r.json();
+  if (!r.ok) { toast(j.error || 'Something went wrong.', true); throw new Error(j.error); }
+  return j;
+}
+const run = fn => (...a) => fn(...a).catch(() => {});
+setInterval(() => fetch('/api/state').then(() => setOnline(true), () => setOnline(false)), 4000);
+
+function renderScore() {
+  const R = st.ranks, lo = [...R].reverse().find(x => st.xp >= x), hi = R.find(x => x > st.xp);
+  $('score').replaceChildren(el('b', { textContent: st.rank }), ` · ${st.xp} XP`, el('div', { id: 'bar' }, el('i', { style: `width:${hi ? (st.xp - lo) / (hi - lo) * 100 : 100}%` })));
+  const here = st.levels.find(l => l.n === cur); if (here) $('mapBtn').textContent = `🗺 Map \u00b7 L${here.display} ${here.title}`;
+}
+
+function step() {
+  if (L.status === 'done') return L.quizDone ? 5 : 4;
+  if (L.mode === 'hack') return 2;
+  const empty = L.mode === 'delegate' && new RegExp(L.emptyMark).test($('code').value);
+  if (L.mode === 'delegate') return empty ? 2 : (!ran || dirty) ? 3 : 2;
+  return !ran ? 2 : 3;
+}
+function renderGuide() {
+  const s = step(), labels = LABELS[L.mode];
+  $('steps').replaceChildren(...labels.map((t, i) => el('li', { className: i + 1 < s ? 'done' : i + 1 === s ? 'current' : '' }, el('b', { textContent: i + 1 < s ? '✓' : i + 1 }), t)));
+  const T = L.mode === 'hack' ? ['Attack the target', ' and capture the goal of the selected rung (shown above the chat). Each rung is harder than the last.', 'tSend'] : {
+    delegate: { 2: ['Write your spec', ' and send it to the agent. ' + (ran && !lastOk ? 'Not there yet: read the grader message and refine it.' : ''), 'agentBtn'],
+                3: ['Review the code', ', then run the grader. Use "Explain this code" if anything is unclear.', 'checkBtn'] },
+    audit: { 2: ['Run the grader', ' to see what the broken code does wrong. It only reports symptoms.', 'checkBtn'],
+             3: ['Form a hypothesis', dirty ? ' and run the grader again.' : ' from the symptom, then tell the agent what is wrong, or fix it yourself.', dirty ? 'checkBtn' : 'agentBtn'] } }[L.mode][s];
+  let text = T, target = null;
+  if (s === 4) { text = ['Cleared!', ' Take the quiz below to lock it in (+10 XP).', 'quizStart']; }
+  if (s === 5) { text = ['Level complete.', L.nextN != null ? ' Move on to the next level.' : ' More levels are on the way.', 'nextBtn']; }
+  $('nextText').replaceChildren(el('strong', { textContent: text[0] }), text[1]); target = text[2];
+  document.querySelectorAll('.pulse').forEach(e => e.classList.remove('pulse'));
+  if ($(target) && !$(target).hidden) $(target).classList.add('pulse');
+  $('nextBtn').hidden = !(L.status === 'done' && L.nextN != null);
+}
+
+function renderChecks() {
+  const t = [...(who === 'build' ? chat : memo.build).filter(m => m.role === 'you').map(m => m.text), $('spec').value].join('\n');
+  $('checks').replaceChildren(...L.checks.map(([label, re]) => el('li', { className: new RegExp(re, 'i').test(t) ? 'on' : '', textContent: (new RegExp(re, 'i').test(t) ? '✓ ' : '○ ') + label })));
+}
+function renderHints(h) { $('hints').textContent = h.length ? h.map((x, i) => `${i + 1}. ${x}`).join('\n\n') : 'No hints used.'; $('hints').style.whiteSpace = 'pre-wrap'; }
+
+async function load(n) {
+  cur = n; st = await api('state'); L = await api('level/' + n);
+  ran = false; lastOk = false; lastMsg = ''; dirty = false; quizOpen = false; qres = null;
+  const W = st.worlds.find(w => w.levels.includes(n)); $('worldTag').textContent = W ? `${W.title} \u00b7 ${W.type}` : ''; $('worldTag').className = 'typetag t-' + (W ? W.type : ''); $('kind').textContent = L.kind; $('intro').textContent = L.intro; $('win').textContent = L.win;
+  $('concept').replaceChildren(...L.concept.split('\n\n').map(p => el('p', { textContent: p })));
+  $('methodCard').hidden = !(L.method && L.method.length); if (L.method) $('method').replaceChildren(...L.method.map(t => el('li', { textContent: t })));
+  $('experiments').hidden = !L.experiments; $('experiments').textContent = L.experiments || '';
+  $('howtoCard').hidden = !(L.howto && L.howto.length); if (L.howto) $('howto').replaceChildren(...L.howto.map(t => el('li', { textContent: t })));
+  $('playbookCard').hidden = !(L.playbook && L.playbook.length); if (L.playbook) $('playbook').replaceChildren(...L.playbook.map(([name, why, tryit]) => el('div', { className: 'pb' }, el('b', { textContent: name }), el('div', { className: 'why', textContent: why }), el('div', { className: 'try', textContent: tryit }))));
+  pending = { build: false, guide: false }; memo = { build: L.chat, guide: L.guide }; who = 'build'; chat = memo[who]; applyMode(); renderChat(false, true); $('vizCard').hidden = !L.viz.length; if (L.viz.length) mountViz($('viz'), L.viz, n);
+  $('spec').placeholder = L.specPlaceholder; $('spec').value = store.get('spec-' + n) || '';
+  $('chips').replaceChildren(...L.chips.map(([label, text]) => el('button', { className: 'chip', textContent: label, onclick: () => addChip(text) })));
+  $('code').value = L.code; $('file').textContent = L.file; renderHints(L.hints);
+  $('hintBtn').disabled = L.hints.length >= L.hintsTotal || L.status === 'done';
+  $('out').replaceChildren();
+  const hack = L.mode === 'hack'; ['codeCard', 'graderCard'].forEach(id => $(id).hidden = hack); $('agentCard').hidden = false; $('modeSeg').hidden = false; $('mBuild').firstChild && ($('mBuild').textContent = hack ? '\uD83E\uDD16 Co-pilot' : '\uD83D\uDD27 Build agent'); $('targetCard').hidden = !hack;
+  if (hack) { rung = 0; hist = {}; $('tResult').hidden = true; renderRungs(); }
+  renderScore(); renderChecks(); renderQuiz(); renderGuide();
+}
+
+function addChip(text) {
+  if (text === '@LAST_GRADER') {
+    if (!lastMsg) return toast('Run the grader first, then use its message here.');
+    text = 'The grader reported:\n' + lastMsg.split('\n').filter(l => /SYMPTOM|Accuracy|Budget|budget/.test(l)).join('\n');
+  }
+  const s = $('spec'); s.value = (s.value ? s.value.trim() + '\n' : '') + text; s.focus();
+  store.set('spec-' + cur, s.value); renderChecks();
+}
+function busy(btn, on, label) { btn.disabled = on; btn.replaceChildren(...(on ? [el('span', { className: 'spin' }), label] : [label])); }
+const stopTask = kind => run(() => api(`level/${cur}/stop`, { kind }))();
+const saveCode = () => api(`level/${cur}/code`, { code: $('code').value });
+
+$('spec').oninput = () => { store.set('spec-' + cur, $('spec').value); renderChecks(); };
+$('spec').onkeydown = e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) $('agentBtn').click(); };
+function codeSel() {
+  const c = $('code'), a = c.selectionStart, b = c.selectionEnd, v = c.value;
+  if (a === b) return null;
+  const from = v.slice(0, a).split('\n').length, to = v.slice(0, b).split('\n').length;
+  const lines = v.split('\n').slice(from - 1, to).join('\n');
+  return { from, to, text: lines };
+}
+const SIZES = { spec: [60, 520], chat: [160, 900], code: [150, 1400] };
+const box = w => $(w);
+function setSize(w, px, save = true) { const [lo, hi] = SIZES[w], h = Math.max(lo, Math.min(hi, Math.round(px))); box(w).style.height = h + 'px'; if (save) store.set('size-' + w, String(h)); }
+['spec', 'chat', 'code'].forEach(w => { const v = +store.get('size-' + w); if (v) setSize(w, v, false);
+  const g = $(w + 'Grip'); let y0 = 0, h0 = 0;
+  g.addEventListener('pointerdown', e => { e.preventDefault(); g.setPointerCapture(e.pointerId); y0 = e.clientY; h0 = box(w).getBoundingClientRect().height; g.classList.add('drag'); });
+  g.addEventListener('pointermove', e => { if (g.hasPointerCapture(e.pointerId)) setSize(w, h0 + e.clientY - y0, false); });
+  const end = e => { if (!g.classList.contains('drag')) return; g.classList.remove('drag'); store.set('size-' + w, String(Math.round(box(w).getBoundingClientRect().height))); };
+  g.addEventListener('pointerup', end); g.addEventListener('pointercancel', end);
+  g.addEventListener('dblclick', () => { box(w).style.height = ''; store.set('size-' + w, ''); });
+});
+function updateSel() { const s = codeSel(); $('explainSelBtn').disabled = !s; $('selInfo').textContent = s ? (s.from === s.to ? `Line ${s.from} selected.` : `Lines ${s.from}-${s.to} selected.`) : 'Select lines to ask about them.'; }
+['mouseup', 'keyup', 'select'].forEach(ev => $('code').addEventListener(ev, updateSel));
+$('explainSelBtn').onclick = () => { const s = codeSel(); if (!s) return; if (who !== 'build') setMode('build');
+  sendChat(`Explain ${s.from === s.to ? 'line ' + s.from : 'lines ' + s.from + '-' + s.to} of my file (shown below). For each line: what it does, and what would go wrong without it. Max 90 words. Do not change the file.\n\n${s.text}`); };
+$('code').oninput = () => { dirty = true; codeStale = false; renderGuide(); clearTimeout(saveTimer); saveTimer = setTimeout(run(saveCode), 600); };
+
+function inlineMd(text) {
+  const out = document.createDocumentFragment(), re = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*\s][^*]*\*)/g; let last = 0, m;
+  while ((m = re.exec(text))) {
+    const t = m[0]; out.append(text.slice(last, m.index));
+    out.append(t[0] === '`' ? el('code', { textContent: t.slice(1, -1) }) : t.startsWith('**') ? el('strong', { textContent: t.slice(2, -2) }) : el('em', { textContent: t.slice(1, -1) }));
+    last = m.index + t.length;
+  }
+  out.append(text.slice(last)); return out;
+}
+function mdBlocks(frag, text) {
+  let list = null, para = [];
+  const flush = () => { if (para.length) { const p = el('p'); para.forEach((l, i) => { if (i) p.append(el('br')); p.append(inlineMd(l)); }); frag.append(p); para = []; } };
+  for (const line of text.split('\n')) {
+    const li = /^\s*(?:[-*\u2022])\s+(.*)/.exec(line) || /^\s*\d+[.)]\s+(.*)/.exec(line), h = /^#{1,4}\s+(.*)/.exec(line);
+    if (li) { flush(); const ord = /^\s*\d/.test(line);
+      if (!list || list.tagName !== (ord ? 'OL' : 'UL')) { list = el(ord ? 'ol' : 'ul'); frag.append(list); }
+      list.append(el('li', {}, inlineMd(li[1])));
+    } else { list = null;
+      if (h) { flush(); frag.append(el('h4', {}, inlineMd(h[1]))); } else if (!line.trim()) flush(); else para.push(line); }
+  }
+  flush();
+}
+// Small safe markdown: bold, italic, `code`, fenced code, lists, headings. Everything is built with text nodes, never innerHTML.
+function md(text) {
+  const frag = document.createDocumentFragment(), parts = text.split(/```\w*\n?([\s\S]*?)```/);
+  parts.forEach((part, i) => i % 2 ? frag.append(el('pre', { className: 'mdcode' }, el('code', { textContent: part.replace(/\n$/, '') }))) : mdBlocks(frag, part));
+  return frag;
+}
+function renderChat(_unused, focusLast) {
+  const box = $('chat'), rows = chat.map(m => el('div', { className: 'msg ' + m.role }, el('small', { textContent: m.role === 'you' ? 'You' : (who === 'guide' ? 'Guide' : 'Agent') }),
+    ...(m.role === 'you' ? [m.text] : [el('div', { className: 'md' }, md(m.text))])));
+  if (pending[who]) rows.push(el('div', { className: 'msg agent' }, el('span', { className: 'spin' }), (who === 'guide' ? 'Guide' : 'Agent') + ' is working...'));
+  if (!rows.length) rows.push(el('div', { className: 'dim sm', textContent: who === 'guide' ? 'Ask anything about this lesson that is unclear. You can also select text in the lesson and click "Ask the guide".' : (L.mode === 'audit' ? 'No messages yet. Run the grader, then tell your agent what you found.' : 'No messages yet. Tell your agent what to build.') }));
+  box.style.scrollBehavior = 'auto'; box.replaceChildren(...rows);
+  const last = box.lastElementChild;  // a new long reply starts at its top, so you read it from the beginning
+  box.scrollTop = focusLast && last && last.offsetHeight > box.clientHeight * 0.5 ? last.offsetTop - 6 : box.scrollHeight;
+  box.style.scrollBehavior = ''; $('chatResetBtn').hidden = !chat.length;
+}
+async function sendChat(message) {
+  const mode = who, lvl = cur, NAME = { build: 'Build agent', guide: 'Guide' };
+  if (pending[mode] || !message.trim()) return;
+  pending[mode] = true; chat = [...chat, { role: 'you', text: message }]; memo[mode] = chat; applyMode(true); renderChat(); renderChecks();
+  const codeAtSend = mode === 'build' ? $('code').value : null, slow = setTimeout(() => { if (who === mode && cur === lvl) $('agentNote').textContent = 'Still working. Replies can take up to a minute. You can use the grader or switch chats meanwhile.'; }, 15000);
+  let ok = true;
+  try {
+    const cop = mode === 'build' && L.mode === 'hack';
+    if (mode === 'build' && !cop) await saveCode();
+    const r = cop ? await api(`level/${lvl}/copilot`, { message, rung, history: (hist[rung] || []).filter(m => !m.batchNote).map(({ role, content }) => ({ role, content })) }) : await api(`level/${lvl}/${mode === 'guide' ? 'guide' : 'chat'}`, { message });
+    if (cur !== lvl) return;  // the player moved to another level; the server kept the transcript
+    if (r.stopped) { memo[mode] = memo[mode].slice(0, -1); ok = false; if (who === mode) $('spec').value = message; toast('Stopped. Your message is back in the box.'); return; }
+    memo[mode] = r.chat.length ? r.chat : [...memo[mode], { role: 'agent', text: r.reply }];
+    if (mode === 'build' && L.mode !== 'hack') {
+      if ($('code').value === codeAtSend || confirm('The agent changed the code while you were editing it. Replace your version with the agent\'s?')) { $('code').value = r.code; dirty = true; }
+      else { codeStale = true; toast('Kept your version on screen. The agent\'s edit is what the grader will test until you type in the code box.'); }
+    }
+    if (!r.ok) toast('The agent had a problem. See its message.', true);
+    else if (who !== mode) toast(`${NAME[mode]} replied. Switch to ${NAME[mode]} to read it.`);
+  } catch (e) { if (cur === lvl) { memo[mode] = memo[mode].slice(0, -1); ok = false; if (who === mode) $('spec').value = message; } }
+  finally { clearTimeout(slow); if (cur === lvl) { pending[mode] = false; chat = memo[who]; applyMode(true); renderChat(false, true); renderGuide(); } }
+}
+const COCHIPS = [['Suggest ideas', 'Suggest two different directions I could try on this rung, and explain the thinking behind each.'], ['Analyse my attempts', 'Look at my recent attempts on this rung. What happened and why?'], ['What next?', 'Based on what has happened so far, which direction should I try next?'], ['Why did it fail?', 'My last attempt did not work. What does the target reply or the events line tell me, and what should I change?']];
+function copilotNote() { return 'The co-pilot reads your recent attempts here (secret hidden) and advises. You send every message yourself. Ctrl+Enter sends.'; }
+function applyMode(keepText) {
+  const g = who === 'guide';
+  $('mBuild').classList.toggle('on', !g); $('mGuide').classList.toggle('on', g);
+  $('specTitle').replaceChildren(g ? 'Guide ' : (L.mode === 'hack' ? 'Co-pilot ' : 'Build agent '), el('span', { className: g ? 'tag' : 'tag you', textContent: g ? 'explains, never solves' : (L.mode === 'hack' ? 'ideas and advice, you send' : 'you direct') }));
+  const cop = !g && L.mode === 'hack';
+  $('chips').hidden = g || cop; $('checks').hidden = g || cop; $('gchips').hidden = !(g || cop); $('explainBtn').hidden = false;
+  if (cop) { $('gchips').replaceChildren(...COCHIPS.map(([l, q]) => el('button', { className: 'chip', textContent: l, onclick: () => { $('spec').value = q; $('agentBtn').click(); } }))); }
+  else if (g) { $('gchips').replaceChildren(...GQ.map(([l, q]) => el('button', { className: 'chip', textContent: l, onclick: () => { $('spec').value = q; $('agentBtn').click(); } }))); }
+  $('spec').placeholder = g ? 'Ask about anything unclear in this lesson...' : (L.mode === 'hack' ? 'Ask for ideas, ask what your last attempts mean, or ask what to try next...' : L.specPlaceholder); $('agentBtn').textContent = g ? 'Ask' : 'Send';
+  $('agentNote').textContent = g ? 'Ctrl+Enter sends. The guide only explains; your Build agent writes the code.' : (L.mode === 'hack' ? copilotNote() : 'Ctrl+Enter sends. The agent remembers the conversation.');
+  if (!keepText) $('spec').value = g ? '' : (store.get('spec-' + cur) || '');
+  const busyNow = pending[who]; $('agentBtn').disabled = busyNow; $('explainBtn').disabled = pending.build; $('stopAgent').hidden = !busyNow; $('stopAgent').dataset.kind = g ? 'guide' : 'agent';
+  $('mBuild').classList.toggle('work', pending.build); $('mGuide').classList.toggle('work', pending.guide);
+}
+function setMode(m) { if (m === who) return; if (who === 'build') store.set('spec-' + cur, $('spec').value); memo[who] = chat; who = m; chat = memo[m]; applyMode(); renderChat(false, true); }
+$('stopAgent').onclick = () => stopTask($('stopAgent').dataset.kind || 'agent');
+$('mBuild').onclick = () => setMode('build'); $('mGuide').onclick = () => setMode('guide');
+const GQ = [['Explain it simpler', 'Explain this lesson more simply, as if I had never seen it.'], ['Give me an analogy', 'Give me an everyday analogy for the main idea.'], ['Why does it matter?', 'Why does this matter in the real world?'], ['What am I actually asked to do?', 'In plain words, what exactly am I asked to do in this level, and how will I know I succeeded?']];
+$('gchips').replaceChildren(...GQ.map(([l, q]) => el('button', { className: 'chip', textContent: l, onclick: () => { $('spec').value = q; $('agentBtn').click(); } })));
+// select text in the lesson, then ask the guide about it
+document.addEventListener('mouseup', e => {
+  const btn = $('askSel'), sel = window.getSelection(), t = sel ? sel.toString().trim() : '';
+  if (e.target === btn) return;
+  const inLesson = sel && sel.anchorNode && ($('intro').closest('main > div') || document.body).contains(sel.anchorNode) && !$('agentCard').contains(sel.anchorNode);
+  if (t.length > 3 && inLesson) { const r = sel.getRangeAt(0).getBoundingClientRect(); btn.style.display = 'block'; btn.hidden = false; btn.style.left = (window.scrollX + r.left) + 'px'; btn.style.top = (window.scrollY + r.bottom + 6) + 'px'; btn.dataset.q = t.slice(0, 400); }
+  else { btn.style.display = 'none'; }
+});
+$('askSel').onclick = () => { const q = $('askSel').dataset.q; $('askSel').style.display = 'none'; setMode('guide'); $('spec').value = `Explain this in simple terms: "${q}"`; $('agentCard').scrollIntoView({ behavior: 'smooth', block: 'center' }); $('spec').focus(); };
+$('agentBtn').onclick = () => { const m = $('spec').value.trim(); if (!m) return toast('Write a message first.'); $('spec').value = ''; if (who === 'build') store.set('spec-' + cur, ''); sendChat(m); };
+$('explainBtn').onclick = () => { if (who !== 'build') setMode('build'); sendChat('Explain this code to me as a manager: what it does, and anything risky. Do not change the file.'); };
+$('chatResetBtn').onclick = run(async () => { if (!confirm('Forget this conversation and start a new one? Your code stays as it is.')) return; memo[who] = (await api(`level/${cur}/${who === 'guide' ? 'guidereset' : 'chatreset'}`, {})).chat; chat = memo[who]; renderChat(); renderChecks(); });
+$('resetBtn').onclick = run(async () => {
+  if (!confirm('Replace the code with the starting version? Your changes to it will be lost.')) return;
+  $('code').value = (await api(`level/${cur}/reset`, {})).code; ran = false; dirty = false; lastMsg = '';
+  $('out').replaceChildren(); renderGuide();
+});
+$('hintBtn').onclick = run(async () => { const r = await api(`level/${cur}/hint`, {}); renderHints(r.hints); $('hintBtn').disabled = r.hints.length >= L.hintsTotal; });
+$('nextBtn').onclick = run(() => load(L.nextN));
+$('helpBtn').onclick = () => $('help').hidden = !$('help').hidden;
+$('helpClose').onclick = () => { $('help').hidden = true; store.set('seenHelp', '1'); };
+if (!store.get('seenHelp')) $('help').hidden = false;
+
+$('checkBtn').onclick = run(async () => {
+  if (!codeStale && L.mode === 'delegate' && new RegExp(L.emptyMark).test($('code').value)) return toast('There is no code yet. Write a spec and send it to the agent first.');
+  $('stopCheck').hidden = false; busy($('checkBtn'), true, 'Running your code...'); const t0 = Date.now(), slow = setInterval(() => { const sec = Math.round((Date.now() - t0) / 1000); if (sec >= 3) $('checkNote').textContent = `Still running (${sec}s). Some levels take a minute or more; the very first run of a level can be slower.`; }, 1000);
+  try {
+    if (codeStale) codeStale = false; else await saveCode();
+    const r = await api(`level/${cur}/check`, {});
+    if (r.code) $('code').value = r.code;
+    if (r.stopped) { $('out').replaceChildren(el('div', { className: 'alert', textContent: 'Stopped. Nothing was graded.' })); return; }
+    ran = true; dirty = false; lastOk = r.ok; lastMsg = r.msg; st = r; showResult(r);
+    if (r.ok) { L.status = 'done'; if (r.gained) bigXp(r.gained); renderQuiz(); }
+    renderScore();
+  } finally { clearInterval(slow); $('stopCheck').hidden = true; $('checkNote').textContent = ''; busy($('checkBtn'), false, 'Run grader'); renderGuide(); }
+});
+$('stopCheck').onclick = () => stopTask('check');
+function bigXp(n) { const x = el('div', { className: 'xp', textContent: `+${n} XP` }); document.body.append(x); setTimeout(() => x.remove(), 1900); }
+function showResult(r) {
+  const m = /Clean accuracy: (\d+)%\s+Accuracy under attack: (\d+)%/.exec(r.msg), box = el('div', { className: 'result ' + (r.ok ? 'ok' : 'fail') });
+  box.append(el('h3', { textContent: r.ok ? '✓ Level cleared' + (r.gained ? ` +${r.gained} XP` : '') : 'Not yet' }));
+  if (m) box.append(...[['Accuracy before attack', m[1], 'var(--ok)'], ['Accuracy under attack', m[2], r.ok ? 'var(--hot)' : 'var(--gold)']].map(([t, v, c]) =>
+    el('div', { className: 'meter' }, t, el('div', {}, el('i', { style: `width:${v}%;background:${c}` })), `${v}%`)));
+  const rest = (m ? r.msg.slice(m.index + m[0].length) : r.msg).trim();
+  if (rest) { const art = rest.includes('->') && rest.split('\n').length > 6;
+    if (art) { const [head, ...body] = rest.split('\n'); box.append(el('div', { className: 'dim sm', textContent: 'A digit the attack flipped (before | after): ' + head.trim() }), el('pre', { className: 'art', textContent: body.join('\n').replace(/^\n/, '') })); }
+    else box.append(el('div', { className: 'alert', textContent: rest })); }
+  $('out').replaceChildren(box);
+}
+
+function renderRungs() {
+  const H = L.hack, solved = new Set(H.solved); if (who === 'build' && L.mode === 'hack' && !pending.build) $('agentNote').textContent = copilotNote();
+  $('rungs').replaceChildren(...H.rungs.map((r, i) => el('button', { className: 'chip' + (i === rung ? ' on' : ''), textContent: `${solved.has(i) ? '✓ ' : ''}${i + 1}. ${r.title}`, onclick: () => { rung = i; $('tResult').hidden = true; renderRungs(); } })));
+  $('rungGoal').textContent = H.rungs[rung].goal; { const tp = H.rungs[rung].tip; $('rungTip').hidden = !tp; $('rungTip').textContent = tp || ''; }
+  $('tinput').placeholder = H.inputPlaceholder; $('submitRow').hidden = !H.submitLabel; $('tAnswer').placeholder = H.submitLabel || '';
+  const h = (hist[rung] || []), box = $('tchat');
+  const batchBlock = m => el('div', { className: 'batch' }, el('h4', { textContent: `${m.content}  \u2192  ${m.batch.filter(x => x.hit).length} of ${m.batch.length} revealed something` + (m.partsTotal ? ` (best: ${Math.max(0, ...m.batch.map(x => x.parts || 0))} of ${m.partsTotal} parts)` : '') }),
+    ...m.batch.map((x, i) => el('div', { className: 'r' + (x.hit ? ' hit' : '') }, el('small', { textContent: `try ${i + 1}${x.hit ? (m.partsTotal ? ` \u2713 ${x.parts} of ${m.partsTotal} parts` : ' \u2713 revealed') : (x.events.length ? ' blocked' : '')}: ` }), (x.hit ? (x.reply || '') : (x.reply || '').slice(0, 300) + ((x.reply || '').length > 300 ? ' ...' : '')), ...x.events.map(e => el('div', { className: 'evt', textContent: e })))));
+  box.replaceChildren(...(h.length ? h.map(m => m.batch ? batchBlock(m) : el('div', { className: 'msg ' + (m.role === 'user' ? 'you' : 'target') }, el('small', { textContent: m.role === 'user' ? H.inputLabel : 'Target' }), m.content,
+    ...(m.events || []).map(e => el('div', { className: 'evt', textContent: e })), ...(m.image ? [el('img', { src: 'data:image/png;base64,' + m.image, style: 'display:block;max-width:100%;margin-top:8px;border-radius:6px;border:1px solid var(--line)', alt: 'The document the model received' })] : []))) : [el('div', { className: 'dim sm', textContent: 'No messages yet. Type your attack below.' })]),
+    ...(tbusy ? [el('div', { className: 'msg target' }, el('span', { className: 'spin' }), 'Target is thinking...')] : []));
+  box.scrollTop = box.scrollHeight;
+}
+function afterHack(r) {
+  L.hack.solved = r.solvedRungs; st = r; L.status = r.levels.find(l => l.n === cur).status;
+  if (r.gained) bigXp(r.gained); renderScore(); renderQuiz(); renderGuide(); renderRungs();
+}
+$('tSend').onclick = run(async () => {
+  if (tbusy) return toast('A reply is still running. Wait for it, or press Stop.');
+  const msg = $('tinput').value.trim();
+  if (!msg) { toast('Type a message in the box first.'); $('tinput').focus(); return; }
+  tbusy = true; $('tSend').disabled = true; $('stopTarget').hidden = false; const h = hist[rung] = hist[rung] || [], prior = h.filter(m => !m.batchNote).map(({ role, content }) => ({ role, content }));
+  h.push({ role: 'user', content: msg }); $('tinput').value = ''; renderRungs();
+  try { const r = await api(`level/${cur}/target`, { rung, history: prior, message: msg });
+    if (r.stopped) { h.pop(); $('tinput').value = msg; toast('Stopped. Your message is back in the box.'); return; }
+    h.push({ role: 'assistant', content: r.reply, events: r.events || [], image: r.image });
+    if (r.solved) { toast('Rung captured!'); $('tResult').hidden = false; $('tResult').textContent = r.note || 'Captured.'; }
+    afterHack(r);
+  } catch (e) { h.pop(); $('tinput').value = msg; throw e; }
+  finally { tbusy = false; $('tSend').disabled = false; $('stopTarget').hidden = true; renderRungs(); }
+});
+$('tBatch').onclick = run(async () => {
+  if (tbusy) return toast('A reply is still running. Wait for it, or press Stop.');
+  const msg = $('tinput').value.trim();
+  if (!msg) { toast('Type a message in the box first, then press Test 5\u00d7.'); $('tinput').focus(); return; }
+  tbusy = true; $('tSend').disabled = $('tBatch').disabled = true; $('stopTarget').hidden = false;
+  const t0 = Date.now(), tick = setInterval(() => { $('tNote').textContent = `Testing 5 tries in fresh conversations... ${Math.round((Date.now() - t0) / 1000)}s (press Stop to cancel)`; }, 1000);
+  $('tBatch').replaceChildren(el('span', { className: 'spin' }), 'Testing...'); $('tNote').textContent = 'Testing 5 tries in fresh conversations... 0s (press Stop to cancel)'; const h = hist[rung] = hist[rung] || [];
+  h.push({ role: 'user', content: msg, batchNote: true }); renderRungs();
+  try {
+    const r = await api(`level/${cur}/targetbatch`, { rung, message: msg, n: 5 });
+    h.pop();
+    if (r.stopped && !r.results.length) { toast('Stopped.'); return; }
+    h.push({ role: 'user', content: `[Test ${r.results.length}x] ` + msg, batchNote: true, batch: r.results, partsTotal: r.partsTotal });
+    const hitCount = r.results.filter(x => x.hit).length;
+    if (r.solvedRungs) { afterHack(r); if (r.gained) { toast(`Captured! ${hitCount} of ${r.results.length} tries reached the goal. +${r.gained} XP`); } else toast(`${hitCount} of ${r.results.length} tries reached the goal. Rung captured!`); }
+    else toast(r.stopped ? 'Stopped early.' : `${hitCount} of ${r.results.length} revealed something.`);
+  } catch (e) { h.pop(); throw e; }
+  finally { clearInterval(tick); tbusy = false; $('tSend').disabled = $('tBatch').disabled = false; $('stopTarget').hidden = true; $('tBatch').textContent = 'Test 5\u00d7'; $('tNote').textContent = 'Ctrl+Enter sends. Models are random: try again if it almost worked.'; renderRungs(); }
+});
+$('stopTarget').onclick = () => stopTask('target');
+$('tinput').onkeydown = e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) $('tSend').click(); };
+$('tClear').onclick = () => { hist[rung] = []; renderRungs(); };
+$('tSubmit').onclick = run(async () => {
+  const answer = $('tAnswer').value.trim(); if (!answer) return;
+  const r = await api(`level/${cur}/submit`, { rung, answer });
+  $('tResult').hidden = false; $('tResult').textContent = r.msg; if (r.ok) { toast('Rung captured!'); $('tAnswer').value = ''; afterHack(r); }
+});
+
+function renderMap() {
+  const byN = Object.fromEntries(st.levels.map(l => [l.n, l])), ICON = { done: '\u2713', open: '\u25b6', locked: '\ud83d\udd12' };
+  $('mapGrid').replaceChildren(...st.worlds.map(w => {
+    const done = w.levels.filter(n => byN[n].status === 'done').length;
+    return el('div', { className: 'wcard t-' + w.type }, el('h3', {}, w.title, el('span', { className: 'typetag', textContent: w.type }), el('span', { className: 'dim sm', style: 'margin-left:auto', textContent: `${done}/${w.levels.length}` })), el('p', { textContent: w.blurb }),
+      ...w.levels.map(n => { const l = byN[n]; return el('button', { className: 'lrow ' + l.status + (n === cur ? ' cur' : ''), title: l.status === 'locked' ? 'Clear the previous level in this world first' : 'Open this level', onclick: () => { if (l.status === 'locked') return; $('mapPanel').hidden = true; run(load)(n); } },
+        el('span', { className: 'st', textContent: ICON[l.status] }), el('span', { className: 'ti', textContent: `L${l.display} ${l.title}` }), el('span', { className: 'kd', textContent: l.kind }), el('span', { className: 'pts', textContent: l.xp + ' XP' })); }));
+  }));
+}
+$('mapBtn').onclick = () => { $('mapPanel').hidden = !$('mapPanel').hidden; if (!$('mapPanel').hidden) renderMap(); };
+$('mapClose').onclick = () => $('mapPanel').hidden = true;
+$('expandBtn').onclick = () => { const on = $('agentCard').classList.toggle('expanded'); $('expandBtn').textContent = on ? '\u2921 Collapse' : '\u2922 Expand'; renderChat(false, true); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { $('agentCard').classList.remove('expanded'); $('expandBtn').textContent = '\u2922 Expand'; $('mapPanel').hidden = true; } });
+
+function renderQuiz() {
+  const body = $('quizBody'), cleared = L.status === 'done';
+  $('quizCard').classList.toggle('locked', !cleared);
+  const done = () => { quizOpen = true; qi = 0; answers = []; qres = null; renderQuiz(); };
+  if (!cleared) return body.replaceChildren(el('p', { className: 'dim', textContent: 'Clear the level to unlock the quiz.' }));
+  if (qres) {
+    const ok = qres.results.every(x => x.ok);
+    return body.replaceChildren(el('p', { textContent: `${qres.results.filter(x => x.ok).length}/${qres.results.length} correct` + (qres.bonus ? `  +${qres.bonus} XP bonus` : '') }),
+      ...qres.results.map((x, i) => el('div', { className: 'why ' + (x.ok ? 'good' : 'wrong'), textContent: `Q${i + 1}: ${x.ok ? 'correct' : 'not quite'}. ${x.why}` })),
+      el('div', { className: 'row' }, ...(ok ? [] : [el('button', { className: 'ghost', textContent: 'Try again', onclick: done })]), ...(L.nextN != null ? [el('button', { className: 'go blue', textContent: 'Next level →', onclick: run(() => load(L.nextN)) })] : [])));
+  }
+  if (!quizOpen) return body.replaceChildren(el('p', { textContent: L.quizDone ? '✓ Quiz complete.' : 'Prove you understand what the agent built.' }),
+    el('button', { id: 'quizStart', className: L.quizDone ? 'ghost' : 'go', textContent: L.quizDone ? 'Retake quiz' : 'Start quiz', onclick: done }));
+  const q = L.quiz[qi], last = qi === L.quiz.length - 1;
+  body.replaceChildren(el('div', { className: 'dim sm', textContent: `Question ${qi + 1} of ${L.quiz.length}` }), el('p', { textContent: q.q }),
+    ...q.opts.map((o, j) => el('button', { className: 'opt' + (answers[qi] === j ? ' sel' : ''), textContent: o, onclick: () => { answers[qi] = j; renderQuiz(); } })),
+    el('div', { className: 'row' }, el('button', { className: 'go blue', disabled: answers[qi] === undefined, textContent: last ? 'Finish' : 'Next', onclick: run(async () => {
+      if (!last) { qi++; return renderQuiz(); }
+      qres = await api(`level/${cur}/quiz`, { answers }); st = qres; quizOpen = false; L.quizDone = st.levels[cur - 1].quizDone; renderScore(); renderQuiz(); renderGuide(); }) })));
+}
+$('nextBtn').hidden = true;
+run(async () => { const s0 = await api('state'); const first = s0.levels.find(l => l.status === 'open') || s0.levels[0]; await load(first.n); })();
+</script>
+</body>
+</html>

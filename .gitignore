@@ -1,0 +1,18 @@
+.venv
+__pycache__/
+*.pt
+*.pth
+*.safetensors
+*.gguf
+*.bin
+data
+.env
+.ipynb_checkpoints/
+.claude/
+game/chat.json
+
+# working copies of level stubs (created from game/stubs on first use; the player edits these)
+labs/*/lvl*
+
+# personal progress / chat history
+game/state.json

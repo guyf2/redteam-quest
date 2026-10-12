@@ -1,0 +1,13 @@
+{
+  "threats": [
+    {
+      "id": "T1",
+      "asset": "what is being attacked (for example: the refund API)",
+      "category": "one of: prompt_injection, data_exfiltration, tool_abuse, training_data_poisoning, model_extraction, privacy_leakage, supply_chain, resource_abuse",
+      "attack": "how an attacker does it, in at least 8 words",
+      "likelihood": 3,
+      "impact": 3,
+      "mitigation": "what you would build or change to reduce it, in at least 8 words"
+    }
+  ]
+}
