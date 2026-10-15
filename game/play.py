@@ -24,8 +24,10 @@ def main():
     if getattr(lvl, "STUB", None) and not lvl.STUB.exists():
         lvl.STUB.parent.mkdir(parents=True, exist_ok=True)
         __import__("shutil").copy(lvl.PRISTINE, lvl.STUB)
+    live = getattr(lvl, "MODE", None) == "hack"  # live-target level: no stub, no check(); played in the web UI
     if cmd == "start":
-        print(f"\n=== Level {n}: {lvl.TITLE} ===\n{lvl.BRIEF}\nEdit: {lvl.STUB}\nThen: play.sh check {n}\n")
+        tail = "This is a live-target level: play it in the web UI (./start-game.sh)." if live else f"Edit: {lvl.STUB}\nThen: play.sh check {n}"
+        print(f"\n=== Level {n}: {lvl.TITLE} ===\n{lvl.BRIEF}\n{tail}\n")
     elif cmd == "hint":
         used = s["hints"].get(str(n), 0)
         if used >= len(lvl.HINTS):
@@ -51,6 +53,8 @@ def main():
             save(s)
             print(f"  +{QUIZ_XP} XP bonus   Rank: {rank(s['xp'])} ({s['xp']} XP)\n")
     elif cmd == "check":
+        if live:
+            return print("Live-target levels are graded in the web UI (./start-game.sh).")
         ok, msg = lvl.check()
         print(msg)
         if ok:
