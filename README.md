@@ -15,7 +15,7 @@ All of it runs on your own computer, against local models.
 ![Levels](https://img.shields.io/badge/levels-41-orange)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-<img src="docs/screenshots/map.png" alt="The RedTeam Quest world map: seven worlds, each ending in a boss" width="90%">
+<img src="assets/screenshots/map.png" alt="The RedTeam Quest world map: seven worlds, each ending in a boss" width="90%">
 
 <sub>The world map: seven worlds, each ending in a boss. Progress and XP are saved as you go.</sub>
 
@@ -57,16 +57,16 @@ All of it runs on your own computer, against local models.
 <td width="50%" valign="top">
 <b>🧩 Delegate, review, learn</b><br>
 Every level mixes a briefing, a live visualisation and an agent that builds your idea.<br><br>
-<img src="docs/screenshots/level.png" alt="A level: mission, the idea, an interactive lab, and your Build agent">
+<img src="assets/screenshots/level.png" alt="A level: mission, the idea, an interactive lab, and your Build agent">
 </td>
 <td width="50%" valign="top">
 <b>🎯 Real grading, real feedback</b><br>
 Graders attack a real model with your code and show exactly what happened.<br><br>
-<img src="docs/screenshots/grader.png" alt="The grader showing accuracy dropping from 98% to 2% under attack">
+<img src="assets/screenshots/grader.png" alt="The grader showing accuracy dropping from 98% to 2% under attack">
 <br><br>
 <b>💥 Attack live chatbots</b><br>
 Talk a real local model into revealing a secret, rung by rung.<br><br>
-<img src="docs/screenshots/live.png" alt="A live-target level: a five-rung ladder of increasingly defended chatbots">
+<img src="assets/screenshots/live.png" alt="A live-target level: a five-rung ladder of increasingly defended chatbots">
 </td>
 </tr>
 </table>
