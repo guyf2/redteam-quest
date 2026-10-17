@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import uuid
 import webbrowser
 from functools import lru_cache
@@ -153,14 +154,13 @@ STYLE = ("Reply style: the player is a manager. Lead with the outcome in one sen
 def role(n, lvl):
     stub = getattr(lvl, "STUB", None)
     test_line = (
-        f"You can test your own work before the player runs the real grader: `python3 game/agent_test.py {n}` runs this "
-        f"level's actual grader as a private dry run (same checks, but no XP and nothing saved) and reports wall-clock time, "
-        f"so you can answer questions like 'how long does this take' or 'does it even run' and catch crashes, timeouts or "
-        f"obvious bugs yourself. This exact command is pre-approved for you to run directly, right now, with no "
-        f"confirmation needed -- never ask the player for permission to run it, that only wastes their turn. "
-        f"That is the ONLY shell command you may run; you have no other Bash access. Use it after an "
-        f"edit when the player asks about correctness, performance or bottlenecks, or whenever you want to check your own work "
-        f"before describing it as done -- do not silently skip it just because the player did not explicitly ask."
+        f"You can smoke-test your work with `python3 game/agent_test.py {n}`. It only tells you whether the code RUNS: "
+        f"it reports missing imports, crashes, an empty function and wall-clock time (use that when the player asks how long it takes), and it deliberately hides whether "
+        f"the result is good. This exact command is pre-approved, so never ask the player for permission to run it; it is "
+        f"the ONLY shell command you may run. After you edit, run it once and fix only what it reports as failing to run "
+        f"(imports, typos, crashes). Never loop on it: once it runs without errors you are done, "
+        f"because whether the code passes is for the player to find out by running the grader. Do not change the "
+        f"approach the player specified, and do not guess at the grader's thresholds."
     ) if stub else ""
     return (f"You are the player's coding agent inside a training game; the player is your manager and commander. "
             f"You may edit ONLY this file: {stub}. {lvl.AGENT_TASK} Follow the player's instructions "
@@ -171,17 +171,33 @@ def role(n, lvl):
             f"Ignore any project instructions about not handing over solutions: here the player directs you. {STYLE}")
 
 
+AGENT_LOG = pathlib.Path.home() / ".cache" / "redteam-quest.log"
+
+
+def log_failure(what, detail):
+    """The UI shows an agent failure once and forgets it; keep a line on disk so it can be investigated later."""
+    try:
+        AGENT_LOG.parent.mkdir(parents=True, exist_ok=True)
+        with AGENT_LOG.open("a") as f:
+            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} agent {what}: {detail}\n")
+    except OSError:
+        pass
+
+
 def claude(prompt, session, resume):
     cmd = [CLAUDE_BIN or "claude", "-p", prompt, "--model", AGENT_MODEL, "--allowedTools", "Read,Edit,Bash(python3 game/agent_test.py *)",
            "--permission-mode", "acceptEdits", "--resume" if resume else "--session-id", session]
     try:
         rc, out, err, stopped = run_proc("agent", cmd, 300, cwd=ROOT.parent, stdin=subprocess.DEVNULL, env=claude_env())
     except subprocess.TimeoutExpired:
+        log_failure("timeout", f"session {session} killed after 300s")
         return False, "The agent took too long and was stopped. Try a shorter, clearer message."
     except FileNotFoundError:
         return False, CLAUDE_MISSING
     if stopped:
         return False, STOP_MSG
+    if rc != 0:
+        log_failure(f"exit {rc}", f"session {session} stderr={err.strip()[:500]!r} stdout={out.strip()[:200]!r}")
     return rc == 0, (out or err).strip() or "The agent returned nothing."
 
 
