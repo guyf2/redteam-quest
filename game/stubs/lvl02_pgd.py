@@ -1,4 +1,4 @@
-"""Level 2: this PGD attack was written by a coding agent. It looks professional. It is broken.
+"""this PGD attack was written by a coding agent. It looks professional. It is broken.
 Find the bugs yourself, or tell your agent which symptom to investigate."""
 import torch
 import torch.nn.functional as F

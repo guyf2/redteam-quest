@@ -54,13 +54,13 @@ QUIZ = [
      ['Moving a trained model from one GPU or server to another', 'Adversarial examples crafted on one model often fool a different model too', 'An attack that works only on the exact model it was built on'], 1,
      'Similar training data and objectives give different models similar decision boundaries, so a perturbation that fools one often fools another.'),
     ('Your attack fools the surrogate 100% of the time but the hidden victim only 45%. Most likely cause?',
-     ["It overfit to the surrogate's particular decision boundary", 'The victim model has no usable gradients', 'eps was set too large for the surrogate'], 0,
+     ['eps was set too large for the surrogate', 'The victim model has no usable gradients', "It overfit to the surrogate's particular decision boundary"], 2,
      "Like a model overfitting its training set, a perturbation can overfit the one surrogate it was optimised against, chasing quirks that the victim doesn't share."),
     ('A vendor says the model is safe because attackers cannot see its gradients. Best response?',
-     ['Agree: without gradients, there is no attack', 'Hiding gradients is not a defense: attack a surrogate and transfer, or query the model', 'Ask the vendor for the model weights directly'], 1,
+     ['Hiding gradients is not a defense: attack a surrogate and transfer, or query the model', 'Agree: without gradients, there is no attack', 'Ask the vendor for the model weights directly'], 0,
      "Security through obscurity of gradients has failed repeatedly; transfer attacks need no access to the real model's gradients at all."),
     ('Which of these tends to make transfer attacks stronger?',
-     ['Momentum, ensembles of surrogates, or input diversity, so the perturbation does not overfit one model', "Matching the victim's exact architecture as closely as possible", 'Using the smallest eps that still fools the surrogate'], 0,
+     ["Matching the victim's exact architecture as closely as possible", 'Momentum, ensembles of surrogates, or input diversity, so the perturbation does not overfit one model', 'Using the smallest eps that still fools the surrogate'], 1,
      "Regularising the attack across models or transformations stops it from exploiting one surrogate's quirks, the same idea as regularising a classifier against overfitting."),
 ]
 HINTS = [

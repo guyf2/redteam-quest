@@ -1,4 +1,4 @@
-"""Level 40: design the choice architecture, not the detection logic. The grader wires your tool's name,
+"""design the choice architecture, not the detection logic. The grader wires your tool's name,
 description and parameter schema into the model's available tool list and measures the effect."""
 
 

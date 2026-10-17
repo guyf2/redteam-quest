@@ -54,16 +54,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('Why can a word written on a photo fool CLIP?',
-     ['CLIP is buggy', 'It learned from web images where in-picture text usually matches the content, so text is a strong shortcut', 'Text changes the pixel colours a lot'], 1,
+     ['CLIP is buggy', 'Text changes the pixel colours a lot', 'It learned from web images where in-picture text usually matches the content, so text is a strong shortcut'], 2,
      'The model absorbed a statistical shortcut from its training data.'),
     ('What does the attack need from the attacker?',
-     ['The model weights', 'Gradient access', 'Only the ability to put text in the scene'], 2,
+     ['The model weights', 'Only the ability to put text in the scene', 'Gradient access'], 1,
      'It is a black-box, no-math attack, which is exactly why it is dangerous.'),
-    ('A visual assistant reads a street sign with injected text and acts on it. Which previous level is this closest to?',
-     ['Level 3 (targeted attack)', 'Level 9 (indirect prompt injection): untrusted content in the scene steers the model', 'Level 1 (FGSM)'], 1,
+    ('A visual assistant reads a street sign with injected text and acts on it. Which earlier lesson is this closest to?',
+     ['Indirect prompt injection: untrusted content in the scene steers the model', 'Targeted adversarial attacks', 'FGSM'], 0,
      'Text in the environment is an injection channel for any model that reads it.'),
     ('Which defense is most directly aimed at this attack?',
-     ['A bigger eps', 'Detecting and ignoring or masking in-image text before classification, plus training on such counterexamples', 'Lower the learning rate'], 1,
+     ['A bigger eps', 'Lower the learning rate', 'Detecting and ignoring or masking in-image text before classification, plus training on such counterexamples'], 2,
      'You must stop the model from treating attacker-controlled text as ground truth.'),
 ]
 HINTS = [

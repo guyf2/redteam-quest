@@ -35,13 +35,13 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('Why do false alarms matter as much as missed attacks?',
-     ['A monitor that cries wolf gets ignored or switched off, so it protects nothing in practice', 'They do not', 'They cost GPU time'], 0,
+     ['They cost GPU time', 'They do not', 'A monitor that cries wolf gets ignored or switched off, so it protects nothing in practice'], 2,
      'Operational cost decides whether a control survives.'),
     ("Why does comparing the model's output before and after a simple transformation reveal many adversarial inputs?",
-     ['Transformations are secret', 'It makes the model bigger', 'The perturbation is tuned to the exact pixel values, so removing detail often undoes it while ordinary images stay stable'], 2,
+     ['The perturbation is tuned to the exact pixel values, so removing detail often undoes it while ordinary images stay stable', 'It makes the model bigger', 'Transformations are secret'], 0,
      'Adversarial examples tend to be brittle.'),
     ('Your monitor works perfectly in your tests but an attacker who knows it bypasses it. What is true?',
-     ['Detectors can be attacked adaptively too: treat them as one layer, not a guarantee', 'That cannot happen', 'The attacker used magic'], 0,
+     ['That cannot happen', 'Detectors can be attacked adaptively too: treat them as one layer, not a guarantee', 'The attacker used magic'], 1,
      'Evaluate against adaptive adversaries before calling a detector robust.'),
 ]
 HINTS = ["The model itself can be asked a second question: what would you say about a slightly simplified copy of this image?", "Choose the threshold from your clean calibration images so that about 5% of them would be flagged."]

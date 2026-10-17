@@ -54,16 +54,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('In the score-based black-box setting, what can the attacker do?',
-     ['Backpropagate through the model to get exact gradients', 'Submit inputs and read the output probabilities', "Read the model's weights directly"], 1,
+     ['Backpropagate through the model to get exact gradients', "Read the model's weights directly", 'Submit inputs and read the output probabilities'], 2,
      "Only queries: no weights, no gradients. That is why the number of queries is the attack's real cost."),
     ('Why do query-efficient attacks matter?',
-     ['Fewer queries means a smaller perturbation', 'Each query costs money or time and may trigger rate limits or detection', 'Query-efficient attacks always succeed more often'], 1,
+     ['Fewer queries means a smaller perturbation', 'Query-efficient attacks always succeed more often', 'Each query costs money or time and may trigger rate limits or detection'], 2,
      "A defender can throttle or watch for suspicious query patterns, so an attack that needs fewer queries is cheaper and harder to notice; it isn't automatically more successful or smaller."),
     ('A defender returns only the top label instead of probabilities. What happens to your attack?',
      ['Score-based attacks lose their signal; you need decision-based attacks, which are costlier', 'Nothing changes, probabilities were never actually used', 'It becomes completely impossible'], 0,
      "Less information raises the attacker's cost (more queries, different algorithm) but does not make the attack impossible."),
     ('Your attack succeeds 90% of the time but uses 5,000 queries per image. In a report, you should say...',
-     ["Only the 90% success rate, since that's what matters to the defender", "The success rate AND the query budget, since robustness claims depend on the attacker's resources", 'That the attack is query-free since it only reads outputs'], 1,
+     ["Only the 90% success rate, since that's what matters to the defender", 'That the attack is query-free since it only reads outputs', "The success rate AND the query budget, since robustness claims depend on the attacker's resources"], 2,
      'An attack result only means something together with its resource budget: 90% at 5,000 queries is a very different claim from 90% at 50.'),
 ]
 HINTS = [

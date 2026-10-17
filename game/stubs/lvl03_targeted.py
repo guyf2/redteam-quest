@@ -1,4 +1,4 @@
-"""Level 3: targeted attack. Your agent fills this in from your spec (or you can write it yourself)."""
+"""targeted attack. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn.functional as F
 

@@ -15,7 +15,7 @@ PRISTINE = pathlib.Path(__file__).resolve().parents[2] / "game/stubs/lvl18_filet
 
 INTRO = ("An AI assistant can read files, but only inside its sandbox folder. The tool was written by a coding agent and passes a quick "
          "test. Before it ships, find out whether the model (or whoever is steering it) can read anything outside the folder.")
-CONCEPT = """An agent's tool is the last line of defense. A model can be persuaded to ask for any path (levels 8 and 9 showed how), so the tool must enforce the boundary itself, in code, and never rely on the model to behave. File access is the classic place this goes wrong, a well-known weakness class called PATH TRAVERSAL.
+CONCEPT = """An agent's tool is the last line of defense. A model can be persuaded to ask for any path (the prompt-injection levels showed how), so the tool must enforce the boundary itself, in code, and never rely on the model to behave. File access is the classic place this goes wrong, a well-known weakness class called PATH TRAVERSAL.
 
 The common mistakes, all visible in the starting code:
   1. TRUSTING THE TEXT OF THE PATH. 'notes/../../outside.txt' looks like it starts inside the folder, but the '..' parts climb out. You must resolve the path to its real, absolute form first, then compare.
@@ -46,13 +46,13 @@ AGENT_TASK = ("The player found problems in this tool. Apply ONLY the fixes thei
 
 QUIZ = [
     ("Why is checking that a path 'starts with' the sandbox folder not enough?",
-     ["'..' segments, symlinks and look-alike folder names (/srv/files_old) can pass or defeat a text prefix check", 'The sandbox check only runs once per session', 'Paths are case sensitive'], 0,
+     ['The sandbox check only runs once per session', "'..' segments, symlinks and look-alike folder names (/srv/files_old) can pass or defeat a text prefix check", 'Paths are case sensitive'], 1,
      'Text comparison is not path comparison. Resolve first, compare components.'),
     ("os.path.join('/sandbox', '/etc/hosts') returns...",
-     ["'/sandbox/etc/hosts'", 'an error', "'/etc/hosts': an absolute second argument replaces the first"], 2,
+     ["'/etc/hosts': an absolute second argument replaces the first", 'an error', "'/sandbox/etc/hosts'"], 0,
      'That is why an absolute path from the model can walk straight out.'),
     ('Why must you open the RESOLVED path and not the original one after checking?',
-     ['It keeps the file handle open longer', 'So the thing you checked is the thing you use; otherwise the filesystem can change between check and use', 'Tradition'], 1,
+     ['It keeps the file handle open longer', 'Tradition', 'So the thing you checked is the thing you use; otherwise the filesystem can change between check and use'], 2,
      'Check-then-use on different strings is a classic race and bypass.'),
     ("The model is told 'only read files in the sandbox'. Is the tool's check still needed?",
      ['Yes: instructions to a model are advice; only code enforces a boundary', 'No, the model obeys', 'Only for large files'], 0,

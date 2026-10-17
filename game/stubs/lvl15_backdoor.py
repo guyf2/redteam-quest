@@ -1,4 +1,4 @@
-"""Level 15: plant a backdoor. Your agent fills this in from your spec (or you can write it yourself)."""
+"""plant a backdoor. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 
 

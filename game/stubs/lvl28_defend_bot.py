@@ -1,4 +1,4 @@
-"""Level 28 (boss): defend the live chatbot. Your agent fills this in from your spec (or you can write it yourself)."""
+"""BOSS: defend the live chatbot. Your agent fills this in from your spec (or you can write it yourself)."""
 
 
 def defend(user_message: str, reply: str, secret: str) -> str:

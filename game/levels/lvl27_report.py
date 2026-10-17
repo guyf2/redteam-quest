@@ -53,16 +53,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('Why must a report never contain the live API key found during testing?',
-     ['Keys cannot be included in any file format', 'Reports are forwarded and stored; the key would leak to everyone who reads it, and it should be rotated instead', 'Keys change weekly'], 1,
+     ['Keys cannot be included in any file format', 'Keys change weekly', 'Reports are forwarded and stored; the key would leak to everyone who reads it, and it should be rotated instead'], 2,
      'The report must not become a second vulnerability.'),
     ("What belongs in 'Steps to reproduce'?",
-     ['A story of how you felt', 'Only the fix', 'Numbered, exact steps in a test environment that someone else can follow, with what to expect at each'], 2,
+     ['A story of how you felt', 'Numbered, exact steps in a test environment that someone else can follow, with what to expect at each', 'Only the fix'], 1,
      'If the engineer cannot reproduce it, it will not get fixed.'),
     ('Why give remediation across several layers?',
      ['One control can fail; permissions, limits, isolation and monitoring each catch what the others miss', 'More text looks better', 'Managers like lists'], 0,
      'Defense in depth: assume any single fix will be bypassed.'),
     ("Why quantify impact ('40 refunds, $2,000 in 10 minutes, no alert')?",
-     ['It sounds scary', 'To pad the report', "Numbers turn 'an attacker could' into a concrete, comparable harm that justifies priority"], 2,
+     ['It sounds scary', "Numbers turn 'an attacker could' into a concrete, comparable harm that justifies priority", 'To pad the report'], 1,
      'Specific evidence is what moves a finding up the queue.'),
 ]
 HINTS = [

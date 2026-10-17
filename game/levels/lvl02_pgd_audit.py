@@ -48,13 +48,13 @@ EMPTY_NUDGE = ""
 
 QUIZ = [
     ('Why does PGD project onto the eps-ball AFTER each step, not just once at the end?',
-     ['It only matters when eps is very large', 'Steps can accumulate drift; projecting each time keeps iterates feasible and the next gradient meaningful', 'It prevents the attack from ever reducing the loss by accident'], 1,
+     ['Steps can accumulate drift; projecting each time keeps iterates feasible and the next gradient meaningful', 'It only matters when eps is very large', 'It prevents the attack from ever reducing the loss by accident'], 0,
      'Projection is part of the optimisation itself (projected gradient ASCENT), not a final cleanup step, and it matters at every eps, not just large ones.'),
     ('Projection centre: the eps-ball must be centred on...',
-     ['Zero', 'The ORIGINAL clean image', 'The current iterate'], 1,
+     ['Zero', 'The current iterate', 'The ORIGINAL clean image'], 2,
      'Centring on the current iterate lets the total perturbation grow without bound as steps accumulate; centring on zero would clip unrelated to the image at all.'),
     ("An agent's attack reports 'success' but the eval used a different eps than the threat model. What do you do?",
-     ['Accept it: a higher success rate is still evidence the model is weak', 'Reject it: robustness numbers are only meaningful for the stated threat model', 'Increase eps further to double-check'], 1,
+     ['Accept it: a higher success rate is still evidence the model is weak', 'Increase eps further to double-check', 'Reject it: robustness numbers are only meaningful for the stated threat model'], 2,
      "Attack-success claims without a matching threat model are the most common mistake in AI security reports: a bigger eps can always 'succeed' more, which proves nothing about the budget you actually care about."),
 ]
 HINTS = [

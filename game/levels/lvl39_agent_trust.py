@@ -14,13 +14,13 @@ NEED_BLOCK, NEED_ALLOW = 0.95, 0.95
 
 INTRO = ("AcmeShop runs several AI agents that message each other: a scheduler-agent, a billing-agent, a support-agent. "
          "A message that claims to come from a trusted agent gets special treatment. A coding agent wrote the check. Does it actually verify anything?")
-CONCEPT = """Levels 9, 35 and 36 showed that text a model reads can steer what it does. Agent-to-agent systems add a new twist: one agent's output becomes ANOTHER agent's input, and if that second agent decides what to trust by reading a claim inside the message body ('FROM: scheduler-agent [trusted]'), then anyone who can get any text in front of it, including an outsider, can forge that claim. A free-text field is not an identity.
+CONCEPT = """The earlier injection levels (email assistant, public form, RAG) showed that text a model reads can steer what it does. Agent-to-agent systems add a new twist: one agent's output becomes ANOTHER agent's input, and if that second agent decides what to trust by reading a claim inside the message body ('FROM: scheduler-agent [trusted]'), then anyone who can get any text in front of it, including an outsider, can forge that claim. A free-text field is not an identity.
 
 The starting code makes exactly this mistake: it looks for a line like 'FROM: scheduler-agent [trusted]' inside the message's own text and trusts whatever claims to be from a known agent. That claim is just more text, written by whoever sent the message, no different from a return address an attacker writes on an envelope.
 
 The fix is not a cleverer pattern to search for in the body; it is to stop looking in the body at all. Trust must key off something STRUCTURALLY unfakeable: in this simulated system, a separate `verified_sender` field on the message object, populated by the transport layer itself (think: a signature, an authenticated channel, an mTLS identity) before the message ever reaches your code, never by anything inside the free-text body.
 
-This mirrors level 20's lesson from the other direction: there, authority for an ACTION had to trace back to the user's own words, not to content the model read. Here, authority for an IDENTITY must trace back to a channel property, not to content the message itself claims."""
+This mirrors the permission-policy level's lesson from the other direction: there, authority for an ACTION had to trace back to the user's own words, not to content the model read. Here, authority for an IDENTITY must trace back to a channel property, not to content the message itself claims."""
 WIN = (f"On freshly generated cases, trust at least {NEED_ALLOW:.0%} of genuinely verified messages and reject at least {NEED_BLOCK:.0%} of messages whose trust claim is only text, "
        "including forged FROM lines, look-alike agent names, and messages with no verified sender at all.")
 BRIEF = f"{INTRO}\n\n{CONCEPT}\n\n{WIN}"
@@ -44,16 +44,16 @@ AGENT_TASK = ("Apply ONLY the fixes the player's instructions describe, keep eve
 
 QUIZ = [
     ("Why does checking a 'FROM: scheduler-agent [trusted]' line inside the message body fail to establish identity?",
-     ['It is slow to parse', "That line is free text the SENDER wrote; anyone who can send a message can write any claim they like inside it", 'It only works for short messages'], 1,
-     "A claim inside content an attacker controls is not evidence of anything; it is just more content."),
+     ['That line is free text the SENDER wrote; anyone who can send a message can write any claim they like inside it', 'It is slow to parse', 'It only works for short messages'], 0,
+     'A claim inside content an attacker controls is not evidence of anything; it is just more content.'),
     ('What should identity be based on instead, in this simulated system?',
-     ['A longer, harder-to-fake sentence in the body', "A separate field set by the transport layer itself (verified_sender), never by anything inside the message body", 'Asking the sending agent to confirm twice'], 1,
-     "Trust must key off something the content cannot influence: a channel-level property, not a textual claim."),
+     ['A longer, harder-to-fake sentence in the body', 'A separate field set by the transport layer itself (verified_sender), never by anything inside the message body', 'Asking the sending agent to confirm twice'], 1,
+     'Trust must key off something the content cannot influence: a channel-level property, not a textual claim.'),
     ("A message's verified_sender is 'scheduler-agent2'. The trusted list contains 'scheduler-agent'. Your check should...",
-     ["Trust it, since it's almost the same name", 'Reject it: it is not an exact match, and look-alike identifiers are a standard spoofing trick', 'Trust it only if the body also says "trusted"'], 1,
-     "Exact matching closes off the look-alike-name trick, the same lesson as level 20's look-alike email addresses."),
-    ('How does this level mirror level 20 (the permission policy) from the opposite direction?',
-     ['It does not; they are unrelated', "L20 required actions to trace back to the user's OWN words, not message content; here, identity must trace back to a CHANNEL property, not message content", 'Both levels use the same function signature'], 1,
+     ["Trust it, since it's almost the same name", 'Trust it only if the body also says "trusted"', 'Reject it: it is not an exact match, and look-alike identifiers are a standard spoofing trick'], 2,
+     "Exact matching closes off the look-alike-name trick, the same lesson as the permission-policy level's look-alike email addresses."),
+    ('How does this level mirror the permission-policy level from the opposite direction?',
+     ['It does not; they are unrelated', "The permission-policy level required actions to trace back to the user's OWN words, not message content; here, identity must trace back to a CHANNEL property, not message content", 'Both levels use the same function signature'], 1,
      "Both levels refuse to let untrusted content be its own source of authority, whether the question is 'may this action happen' or 'who is this from'."),
 ]
 HINTS = [

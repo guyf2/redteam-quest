@@ -27,7 +27,7 @@ What goes wrong, and what the harness above does:
   4. NO PROJECTION OR CLIPPING. Perturbed pixels must stay in [0, 1] and within eps of the original.
   5. ATTACKS THAT FOLLOW A MASKED GRADIENT. If a model hides or flattens its gradient (like the quantization defense in the boss level), a gradient attack goes nowhere and reports a false victory for the defender. A trustworthy evaluation includes ADAPTIVE attacks: transfer from the model's inner network, or BPDA (a straight-through approximation of the non-differentiable step), and takes the WORST case across all of them.
 
-The three models in the grader: a standard classifier, the quantization-'defended' classifier from level 7 (which exposes its inner network as `model.base` and its `levels` attribute), and a PGD adversarially-trained classifier. The grader knows the true worst-case robust accuracy of each (measured with a strong adaptive evaluation). Your function must reproduce it, not flatter it.
+The three models in the grader: a standard classifier, the quantization-'defended' classifier from the 'robust' model boss (which exposes its inner network as `model.base` and its `levels` attribute), and a PGD adversarially-trained classifier. The grader knows the true worst-case robust accuracy of each (measured with a strong adaptive evaluation). Your function must reproduce it, not flatter it.
 
 The grader gives symptoms only: your number and the true one for each model."""
 WIN = (f"For each of the three models at eps = {EPS}, your robust_accuracy must land within {TOL:.0%} of the true worst-case value, "
@@ -51,13 +51,13 @@ AGENT_TASK = ("The player found problems in this evaluation code. Apply ONLY the
 
 QUIZ = [
     ('Why is a robustness number from a weak attack meaningless?',
-     ['It is an upper bound only as good as the attack; a stronger attack could find far more failures', 'It is too low', 'Weak attacks are illegal'], 0,
+     ['It is too low', 'It is an upper bound only as good as the attack; a stronger attack could find far more failures', 'Weak attacks are illegal'], 1,
      'You are reporting what the evaluator managed, not what an attacker could.'),
     ('Dividing eps by 255 when your images are already in [0, 1] means...',
      ['Nothing', 'The attack is stronger', 'The attack is about 255 times weaker than you claim, so the model looks robust'], 2,
      'Units are the quietest bug in robustness evaluation.'),
     ('Your evaluation says a model is 98% robust, but a transfer attack from its inner network gets it to 0%. What happened?',
-     ['The transfer attack is unfair', 'The model is robust', 'The model masks its gradient; your attack followed a useless gradient'], 2,
+     ['The transfer attack is unfair', 'The model masks its gradient; your attack followed a useless gradient', 'The model is robust'], 1,
      'That is gradient masking, and the reason adaptive attacks are mandatory.'),
     ('How should you count an example when you run an attack with several random restarts?',
      ['Robust if the first attempt fails', 'Average over attempts', 'Robust only if EVERY attempt fails (worst case)'], 2,

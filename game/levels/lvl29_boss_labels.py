@@ -38,7 +38,7 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('Why can the platform not just crop a border off every photo?',
-     ['Cropped photos are rejected by the image host', 'Writing can be anywhere and big, and cropping also damages honest photos', 'Most attacks place text in the exact same corner'], 1,
+     ['Writing can be anywhere and big, and cropping also damages honest photos', 'Cropped photos are rejected by the image host', 'Most attacks place text in the exact same corner'], 0,
      'A fixed-border crop both misses labels placed elsewhere and ruins photos that never had an attack on them; a defense that breaks the product gets removed.'),
     ("A sanitizer that works on today's attack styles but not on a new one is...",
      ['Fine', 'Impossible to build', 'A signature defense: the attacker only needs a style you did not anticipate'], 2,

@@ -1,4 +1,4 @@
-"""Level 5: black-box attack. Your agent fills this in from your spec (or you can write it yourself)."""
+"""black-box attack. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 
 

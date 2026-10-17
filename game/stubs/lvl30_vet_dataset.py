@@ -1,4 +1,4 @@
-"""Level 30 (boss): vet a vendor's dataset. Your agent fills this in from your spec (or you can write it yourself)."""
+"""BOSS: vet a vendor's dataset. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 
 

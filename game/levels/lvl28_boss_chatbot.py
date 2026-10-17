@@ -38,13 +38,13 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('Why does the grader use the real model instead of a simulated one?',
-     ['A simulated model would need network access', 'It trains the model to be more secure over time', 'A real model leaks in forms nobody scripted, so your defense must handle reality, not your assumptions'], 2,
+     ['A real model leaks in forms nobody scripted, so your defense must handle reality, not your assumptions', 'It trains the model to be more secure over time', 'A simulated model would need network access'], 0,
      'A defense tested only against expected attacks is untested; grading does not train the model at all.'),
     ('Why must you look for pieces and transformations of the secret and not only its exact text?',
-     ['It is easier', 'Pieces are harmless', 'A leak is a leak: one word, reversed or spaced out gives the attacker most of it'], 2,
+     ['A leak is a leak: one word, reversed or spaced out gives the attacker most of it', 'Pieces are harmless', 'It is easier'], 0,
      'Define leakage by what an attacker can reconstruct, not by one string match.'),
     ('What is the best long-term fix if a secret must never leak?',
-     ["Keep the secret out of the model's context entirely (apply it in code the model cannot read)", 'A better filter', 'A louder warning in the prompt'], 0,
+     ['A louder warning in the prompt', 'A better filter', "Keep the secret out of the model's context entirely (apply it in code the model cannot read)"], 2,
      'Filters and warnings are a last line of defense; the strongest design never gives the model the secret.'),
 ]
 PLAYBOOK = [

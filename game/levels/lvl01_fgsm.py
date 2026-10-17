@@ -48,10 +48,10 @@ EMPTY_NUDGE = "There is no attack code yet. Write your spec in step 1 and send i
 
 QUIZ = [
     ('FGSM takes the gradient of the loss with respect to WHAT?',
-     ['The input pixels', 'The model weights', 'The attack budget eps'], 0,
+     ['The attack budget eps', 'The model weights', 'The input pixels'], 2,
      'Weights stay frozen during an attack, and eps is a fixed number you choose, not something you differentiate. The pixels are what FGSM perturbs.'),
     ('Why clip the result to [0, 1]?',
-     ['Because eps already guarantees pixels stay in range', 'To keep every pixel inside the valid image range, so the result is still a real image', 'To make the gradient numerically more stable'], 1,
+     ['To keep every pixel inside the valid image range, so the result is still a real image', 'Because eps already guarantees pixels stay in range', 'To make the gradient numerically more stable'], 0,
      'eps only bounds how much a pixel may change, not where it lands; without clipping, a pixel can go negative or above 1. Clipping has no effect on the gradient, which is already computed by the time you clip.'),
     ("Your agent's attack code makes accuracy go UP from 98% to 99%. Most likely bug?",
      ['eps was set too small', 'It stepped along -sign(grad) instead of +sign(grad), i.e. it helped the model', 'The model was left in train() mode instead of eval()'], 1,

@@ -58,16 +58,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('What does a certified radius guarantee?',
-     ["No perturbation of L2 size below the radius can change the smoothed classifier's answer for that input", 'No attack found so far works', 'The model is 100% accurate'], 0,
+     ['The model is 100% accurate', 'No attack found so far works', "No perturbation of L2 size below the radius can change the smoothed classifier's answer for that input"], 2,
      'It is a proof about all perturbations inside the radius, not an empirical test.'),
     ('Why use a lower confidence bound for p_A instead of n_a / n?',
-     ['It is faster', 'scipy requires it', 'The fraction is only an estimate: using it can overstate the radius and make the certificate false'], 2,
+     ['The fraction is only an estimate: using it can overstate the radius and make the certificate false', 'scipy requires it', 'It is faster'], 0,
      'A guarantee must hold with high probability, so it has to be built on a bound, not a point estimate.'),
     ('Why draw separate samples for guessing the top class and for estimating its probability?',
      ['Choosing the class and estimating it on the same samples biases the estimate upward', 'No reason', 'To use more GPU'], 0,
      'Selection bias: you would be evaluating the winner on the data that crowned it.'),
     ('Increasing sigma gives larger certified radii but...',
-     ['Nothing changes', 'Removes the guarantee', 'Lowers accuracy on clean inputs, because the base model must handle heavier noise'], 2,
+     ['Lowers accuracy on clean inputs, because the base model must handle heavier noise', 'Removes the guarantee', 'Nothing changes'], 0,
      'It is a robustness/accuracy trade-off, like adversarial training.'),
 ]
 HINTS = [

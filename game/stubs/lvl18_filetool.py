@@ -1,4 +1,4 @@
-"""Level 18: this file-reading tool was written by a coding agent for an AI assistant.
+"""this file-reading tool was written by a coding agent for an AI assistant.
 The assistant may only read files inside its sandbox folder. The code looks careful. It is not.
 Find the weaknesses from the symptoms and fix them, or tell your agent what to investigate."""
 import os

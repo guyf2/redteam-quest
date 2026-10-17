@@ -1,4 +1,4 @@
-"""Level 1: FGSM. Your agent fills this in from your spec (or you can write it yourself)."""
+"""FGSM. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 import torch.nn.functional as F
 

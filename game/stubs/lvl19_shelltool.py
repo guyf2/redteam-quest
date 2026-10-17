@@ -1,4 +1,4 @@
-"""Level 19: this command tool was written by a coding agent. The assistant may run only four read-only commands
+"""this command tool was written by a coding agent. The assistant may run only four read-only commands
 (ls, cat, wc, grep) on files inside its sandbox. The code looks careful. It is not.
 Find the weaknesses from the symptoms and fix them, or tell your agent what to investigate."""
 import subprocess

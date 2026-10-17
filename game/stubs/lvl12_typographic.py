@@ -1,4 +1,4 @@
-"""Level 12: typographic attack. Your agent fills this in from your spec (or you can write it yourself)."""
+"""typographic attack. Your agent fills this in from your spec (or you can write it yourself)."""
 from PIL import Image, ImageDraw, ImageFont
 
 

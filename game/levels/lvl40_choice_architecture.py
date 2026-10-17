@@ -41,17 +41,17 @@ AGENT_TASK = "Implement what the player's spec asks in the file, following it li
 
 QUIZ = [
     ("Why can offering an unused tool change a model's behavior at all?",
-     ['It cannot; only words the model reads as instructions change behavior', "A visible, low-friction third option (flag and move on) competes with 'comply' and 'refuse', changing what the model reaches for on borderline requests, even if it is rarely or never called", 'Tools always run automatically without the model deciding'], 1,
-     "Choice architecture shapes decisions through what options are visible and how easy each one is to reach for, not only through explicit rules."),
+     ["A visible, low-friction third option (flag and move on) competes with 'comply' and 'refuse', changing what the model reaches for on borderline requests, even if it is rarely or never called", 'It cannot; only words the model reads as instructions change behavior', 'Tools always run automatically without the model deciding'], 0,
+     'Choice architecture shapes decisions through what options are visible and how easy each one is to reach for, not only through explicit rules.'),
     ('What exactly does the player design in this level?',
-     ["Detection logic that decides when a request is suspicious", "Only the tool's name, description and schema -- what the model sees as an available action", 'A new system prompt rule telling the model to be careful'], 1,
+     ['Detection logic that decides when a request is suspicious', 'A new system prompt rule telling the model to be careful', "Only the tool's name, description and schema -- what the model sees as an available action"], 2,
      "The grader fixes the detection, measurement and both conditions; only the tool text the model sees is the player's input, which is what keeps the comparison honest."),
     ('Why must the grader run the SAME fixed request set through BOTH conditions on the SAME live model?',
-     ['To save compute', "So the only thing that differs between the two measured rates is whether the tool was offered, isolating the choice-architecture effect from any other variable", 'Because the model requires it'], 1,
-     "A valid before/after comparison holds every variable fixed except the one being tested."),
+     ['So the only thing that differs between the two measured rates is whether the tool was offered, isolating the choice-architecture effect from any other variable', 'To save compute', 'Because the model requires it'], 0,
+     'A valid before/after comparison holds every variable fixed except the one being tested.'),
     ('A tool description reading "ACCUSE the user of wrongdoing and report them" versus one reading "flag for a quick human double-check" would likely differ in...',
-     ['Nothing, tool descriptions never affect behavior', 'How readily the model reaches for it: a low-friction, routine-sounding option is easier to choose than a confrontational one', 'Only the length of the generated text'], 1,
-     "This is the design lesson: the SAME capability, described differently, changes how available it feels as a choice."),
+     ['Nothing, tool descriptions never affect behavior', 'Only the length of the generated text', 'How readily the model reaches for it: a low-friction, routine-sounding option is easier to choose than a confrontational one'], 2,
+     'This is the design lesson: the SAME capability, described differently, changes how available it feels as a choice.'),
 ]
 HINTS = [
     "Give the tool a routine-sounding name like flag_for_review or escalate_to_human, not something that sounds like an accusation.",

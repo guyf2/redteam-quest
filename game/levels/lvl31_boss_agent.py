@@ -44,7 +44,7 @@ QUIZ = [
      ['It does not', 'It costs money', 'An assistant that cannot do its job gets turned off, taking the security with it'], 2,
      'Security has to coexist with the product.'),
     ('Which is the strongest justification for a privileged action?',
-     ['The tool output says it is fine', "The real user's own message named the target", 'The model asked politely'], 1,
+     ["The real user's own message named the target", 'The tool output says it is fine', 'The model asked politely'], 0,
      'Authority comes from the user, never from content the model read.'),
 ]
 HINTS = ["Each earlier agent level solved one slice of this. What was the rule that fixed that slice?", "Compare against real, resolved paths and exact program names; for people and URLs, trace them to the user's own message."]

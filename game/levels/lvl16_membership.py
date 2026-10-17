@@ -57,16 +57,16 @@ AGENT_TASK = ("Implement what the player's spec asks in the file, following it l
 
 QUIZ = [
     ('What does a membership inference attack reveal?',
-     ["The model's architecture", "The model's weights", 'Whether a specific example was part of the training set'], 2,
+     ['Whether a specific example was part of the training set', "The model's weights", "The model's architecture"], 0,
      'It tests whether a particular record was used for training, not how the model is built or what its weights are.'),
     ('Why does a loss-based attack work?',
      ['Members always get the highest-probability class', 'Models fit examples they trained on more tightly than fresh examples', 'Members are always correct'], 1,
      'The generalisation gap leaks membership: training examples get systematically lower loss, not a guaranteed top prediction.'),
     ('Which change makes the model LESS vulnerable?',
-     ['Returning exact confidence values', 'Training for many more epochs on the same small set', 'Regularisation, early stopping, more data, or differential privacy'], 2,
+     ['Returning exact confidence values', 'Regularisation, early stopping, more data, or differential privacy', 'Training for many more epochs on the same small set'], 1,
      'Overfitting is the root cause; anything that narrows the train/test gap helps, and DP gives a provable bound. The other two make overfitting (and thus the leak) worse.'),
     ('Your score is inverted (lower means member) and your AUC is 0.12. What does that tell you?',
-     ['The attack is useless', 'The signal is strong but the sign is wrong: flip it and you get 0.88', 'The model is private'], 1,
+     ['The signal is strong but the sign is wrong: flip it and you get 0.88', 'The attack is useless', 'The model is private'], 0,
      'An AUC far below 0.5 is as informative as one far above it: you just have the direction backwards.'),
 ]
 HINTS = [

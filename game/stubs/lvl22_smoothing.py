@@ -1,4 +1,4 @@
-"""Level 22: randomized smoothing. Your agent fills this in from your spec (or you can write it yourself)."""
+"""randomized smoothing. Your agent fills this in from your spec (or you can write it yourself)."""
 import torch
 
 

@@ -16,7 +16,7 @@ STUB = pathlib.Path(__file__).resolve().parents[2] / "labs/06-defense/lvl24_back
 PRISTINE = pathlib.Path(__file__).resolve().parents[2] / "game/stubs/lvl24_backdoor_hunt.py"
 CORNERS = {(0, 0): "top-left", (0, 1): "top-right", (1, 0): "bottom-left", (1, 1): "bottom-right"}
 
-INTRO = ("In level 15 you planted a backdoor. Now you are the incident responder: three models arrived from a vendor, one of them was "
+INTRO = ("Earlier you planted a backdoor. Now you are the incident responder: three models arrived from a vendor, one of them was "
          "poisoned, and you do not know which, where the trigger is, or what it does. Find it.")
 CONCEPT = """You cannot find a backdoor by testing on normal data: the model behaves perfectly on it. You also cannot read the weights and see a trigger. What you CAN do is ask the model a question that only a backdoored model answers surprisingly: 'how little would I have to change an input to force you to say class t?'
 
@@ -58,13 +58,13 @@ QUIZ = [
      ['The model behaves normally on every input that lacks the trigger', 'Backdoors are random', 'Test sets are too small'], 0,
      'The malicious behaviour is conditional on a trigger the tester never uses.'),
     ('In Neural Cleanse, what is the signature of a backdoored target class?',
-     ['The largest patch needed to force it', 'No patch works', 'A much SMALLER patch suffices to force it than for any other class'], 2,
+     ['A much SMALLER patch suffices to force it than for any other class', 'No patch works', 'The largest patch needed to force it'], 0,
      'The trigger is a shortcut, so the optimiser finds a tiny pattern.'),
     ("What does the recovered mask tell you beyond 'this model is bad'?",
-     ['Where the trigger is and roughly what it looks like: evidence you can show', 'Nothing', 'The training date'], 0,
+     ['Nothing', 'Where the trigger is and roughly what it looks like: evidence you can show', 'The training date'], 1,
      'Reverse-engineering produces an artifact, not just a score.'),
     ('You find no outlier in any model. What is the correct conclusion?',
-     ['The models are proven clean', 'The tool is broken', 'No evidence of this kind of backdoor: it can still exist (other triggers, larger or input-dependent ones)'], 2,
+     ['No evidence of this kind of backdoor: it can still exist (other triggers, larger or input-dependent ones)', 'The tool is broken', 'The models are proven clean'], 0,
      'Absence of evidence from one method is not proof of absence.'),
 ]
 HINTS = [
